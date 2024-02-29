@@ -1,7 +1,13 @@
 package org.example.hexlet;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.http.NotFoundResponse;
+
+import io.javalin.Javalin;
+
+import java.util.Optional;
 
 public class HelloWorld {
     public static void main(String[] args) {
@@ -9,24 +15,20 @@ public class HelloWorld {
             config.plugins.enableDevLogging();
         });
 
-//        app.get("/", ctx -> {
-//            ctx.status(403);
-//            ctx.header("KEY", "value");
-//        });
-        app.get("/hello", ctx -> {
-            var name = ctx.queryParamAsClass("name", String.class).getOrDefault("Hello, World");
-            ctx.result("Hello " + name + "!");
+
+        app.get("/users/{id}", ctx -> {
+            ctx.result("User ID: " + ctx.pathParam("id"));
         });
-//        app.get("/admin", ctx -> {
-//            // Указываем статус вторым параметром
-//            ctx.redirect("/", HttpStatus.forStatus(302));
-//        });
-//        app.get("/", ctx -> {
-//            ctx.result("Hello World");
-//        });
-//        app.get("/users", ctx -> {
-//            var page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-//        });
+        app.get("/posts/{postId}", ctx -> {
+            ctx.result("Post ID: " + ctx.pathParam("postId"));
+        });
+        app.get("/users/{id}/posts/{postId}", ctx -> {
+            ctx.result("User ID: " + ctx.pathParam("id"));
+            ctx.result("Post ID from user " + ctx.pathParam("postId"));
+
+        });
+
         app.start(7070);
     }
+
 }
