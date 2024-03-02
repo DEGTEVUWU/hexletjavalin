@@ -98,7 +98,7 @@ public class HelloWorld {
             }
             var header = "Course for programming";
             var page = new CoursesPage(Arrays.asList(selectedPage), header);
-            ctx.render("index.jte", Collections.singletonMap("page", page));
+            ctx.render("courses/index.jte", Collections.singletonMap("page", page));
         });
 
         app.start(7070);
