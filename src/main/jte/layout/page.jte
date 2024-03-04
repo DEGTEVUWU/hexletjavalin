@@ -26,6 +26,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/courses">Все курсы</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users">Все пользователи</a>
+            </li>
         </ul>
     </div>
 </nav>

@@ -6,10 +6,17 @@ import gg.jte.output.StringOutput;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import org.apache.commons.text.StringEscapeUtils;
+import org.example.hexlet.data.DataCourses;
+import org.example.hexlet.data.DataUsers;
 import org.example.hexlet.dto.courses.CoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
+import org.example.hexlet.dto.users.UserPage;
+import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.Course;
 import org.example.hexlet.model.Data;
+import org.example.hexlet.model.User;
+import org.example.hexlet.repository.CourseRepository;
+import org.example.hexlet.repository.UserRepository;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import java.io.IOException;
@@ -25,7 +32,8 @@ import gg.jte.output.StringOutput;
 import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class HelloWorld {
-    private static final List<Course> COURSES = Data.getCourses();
+    private static final List<Course> COURSES = DataCourses.getCourses();
+    private static final List<User> USERS = DataUsers.getUsers();
 
     public static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
@@ -113,6 +121,59 @@ public class HelloWorld {
 //        courses.add(course3);
 
 
+        app.get("/users/build", ctx -> {
+            ctx.render("users/build.jte");
+        });
+
+        app.get("/courses/build", ctx -> {
+            ctx.render("courses/build.jte");
+        });
+
+        app.post("/users", ctx -> {
+            var name = ctx.formParam("name");
+            var email = ctx.formParam("email").trim().toLowerCase();
+            var password = ctx.formParam("password");
+            var passwordConfirmation = ctx.formParam("passwordConfirmation");
+
+            if (!passwordConfirmation.equals(password)) {
+                throw new NotFoundResponse("Password mismatch!");
+            }
+            var user = new User(name, email, password);
+            UserRepository.save(user);
+            ctx.redirect("/users");
+        });
+
+        app.post("/courses", ctx -> {
+            var name = ctx.formParam("name");
+            var description = ctx.formParam("description");
+            var password = ctx.formParam("password");
+            var passwordConfirmation = ctx.formParam("passwordConfirmation");
+
+            if (!passwordConfirmation.equals(password)) {
+                throw new NotFoundResponse("Password mismatch!");
+            }
+            var course = new Course(name, description, password);
+            CourseRepository.save(course);
+            ctx.redirect("/courses");
+        });
+
+        app.get("/users/{id}", ctx -> {
+            var id = ctx.pathParamAsClass("id", Long.class).get();
+
+            User user = USERS.stream()
+                    .filter(u -> id.equals(u.getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (user == null) {
+                throw new NotFoundResponse("User not found");
+            }
+
+            UserPage page = new UserPage(user);
+            ctx.render("users/show.jte", Collections.singletonMap("page", page));
+        });
+
+
         app.get("/courses/{id}", ctx -> {
             var id = ctx.pathParamAsClass("id", Long.class).get();
 
@@ -122,25 +183,87 @@ public class HelloWorld {
                     .orElse(null);
 
             if (course == null) {
-                throw new NotFoundResponse("User not found");
+                throw new NotFoundResponse("Course not found");
             }
 
             CoursePage page = new CoursePage(course);
             ctx.render("courses/show.jte", Collections.singletonMap("page", page));
         });
 
+
+
+
+        app.get("/users", ctx -> {
+            List<User> RESULT_USERS = new ArrayList<>();
+            RESULT_USERS.addAll(USERS);
+            RESULT_USERS.addAll(UserRepository.getEntities());
+
+            var term = ctx.queryParam("term");
+            List<User> users = new ArrayList<>();
+
+            if (term != null) {
+                Set<String> namesUsers = new TreeSet<>();
+                namesUsers = RESULT_USERS.stream()
+                        .map(User::getName)
+                        .collect(Collectors.toSet());
+
+                Set<String> mailUsers = new TreeSet<>();
+                mailUsers = RESULT_USERS.stream()
+                        .map(User::getEmail)
+                        .collect(Collectors.toSet());
+
+                boolean nameExist = false;
+                for (var name : namesUsers) {
+                    if (startsWithIgnoreCase(name, term)) {
+                        nameExist = true;
+                        break;
+                    }
+                }
+
+                boolean mailExist = false;
+                for (var name : mailUsers) {
+                    if (startsWithIgnoreCase(name, term)) {
+                        mailExist = true;
+                        break;
+                    }
+                }
+
+                if (nameExist) {
+                    users = RESULT_USERS.stream()
+                            .filter(u  -> startsWithIgnoreCase(u.getName(), term))
+                            .collect(Collectors.toList());
+                } else if (mailExist) {
+                    users = RESULT_USERS.stream()
+                            .filter(u -> startsWithIgnoreCase(u.getEmail(), term))
+                            .collect(Collectors.toList());
+                }
+            } else {
+                users = RESULT_USERS;
+            }
+            UsersPage page = new UsersPage(users, term);
+            ctx.render("users/index.jte", Collections.singletonMap("page", page));
+
+        });
+
+
+
+
         app.get("/courses", ctx -> {
+            List<Course> RESULT_COURSES = new ArrayList<>();
+            RESULT_COURSES.addAll(COURSES);
+            RESULT_COURSES.addAll(CourseRepository.getEntities());
+
             var term = ctx.queryParam("term");
             List<Course> courses = new ArrayList<>();
 
             if (term != null) {
                 Set<String> namesCourses = new TreeSet<>();
-                namesCourses = COURSES.stream()
+                namesCourses = RESULT_COURSES.stream()
                         .map(Course::getName)
                         .collect(Collectors.toSet());
 
                 Set<String> descCourses = new TreeSet<>();
-                descCourses = COURSES.stream()
+                descCourses = RESULT_COURSES.stream()
                         .map(Course::getDescription)
                         .collect(Collectors.toSet());
 
@@ -161,21 +284,23 @@ public class HelloWorld {
                 }
 
                 if (nameExist) {
-                     courses = COURSES.stream()
+                     courses = RESULT_COURSES.stream()
                             .filter(c  -> startsWithIgnoreCase(c.getName(), term))
                             .collect(Collectors.toList());
                 } else if (descExist) {
-                    courses = COURSES.stream()
+                    courses = RESULT_COURSES.stream()
                             .filter(c -> startsWithIgnoreCase(c.getDescription(), term))
                             .collect(Collectors.toList());
                 }
             } else {
-                courses = COURSES;
+                courses = RESULT_COURSES;
             }
             CoursesPage page = new CoursesPage(courses, term);
             ctx.render("courses/index.jte", Collections.singletonMap("page", page));
 
         });
+
+
         app.get("/", ctx -> {
             ctx.render("index.jte");
         });
