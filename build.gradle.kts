@@ -28,6 +28,8 @@ dependencies {
 
     implementation("gg.jte:jte:3.0.1")
     implementation("io.javalin:javalin-rendering:5.6.2")
+    implementation("org.apache.commons:commons-text:1.11.0")
+    implementation("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20220608.1")
 
     compileOnly("org.projectlombok:lombok:1.18.30")
     implementation ("net.datafaker:datafaker:2.1.0")
