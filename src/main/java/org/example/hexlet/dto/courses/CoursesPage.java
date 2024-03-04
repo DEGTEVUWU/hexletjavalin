@@ -9,18 +9,19 @@ import java.util.List;
 
 public class CoursesPage {
     private List<Course> courses;
-    private String header;
+    private String term;
 
-    public CoursesPage(List<Course> courses, String header) {
+    public CoursesPage(List<Course> courses, String term) {
         this.courses = courses;
-        this.header = header;
+        this.term = term;
+    }
+
+    public String getTerm() {
+        return term;
     }
 
     public List<Course> getCourses() {
         return courses;
     }
 
-    public String getHeader() {
-        return header;
-    }
 }

@@ -4,18 +4,27 @@ import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import io.javalin.Javalin;
+import io.javalin.http.NotFoundResponse;
 import org.apache.commons.text.StringEscapeUtils;
+import org.example.hexlet.dto.courses.CoursePage;
+import org.example.hexlet.dto.courses.CoursesPage;
+import org.example.hexlet.model.Course;
+import org.example.hexlet.model.Data;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import io.javalin.Javalin;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 
 public class HelloWorld {
+    private static final List<Course> COURSES = Data.getCourses();
+
     public static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
         return Integer.valueOf(port);
@@ -73,27 +82,103 @@ public class HelloWorld {
 
 
 
+//        app.get("/", ctx -> {
+//            ctx.result("Post ID from user " + ctx.pathParam("postId"));
+//
+//        });
+
+//        app.get("/users/{id}", ctx -> {
+//            PolicyFactory policy = new HtmlPolicyBuilder()
+//                    .allowElements("a")
+//                    .allowUrlProtocols("https")
+//                    .allowAttributes("href").onElements("a")
+//                    .requireRelNofollowOnLinks()
+//                    .toFactory();
+//
+//            var id = ctx.pathParam("id");
+//            var escapedId = StringEscapeUtils.escapeHtml4(id);
+//            var filtredHtml = policy.sanitize(escapedId);
+//            ctx.contentType("html/text");
+//            ctx.result(filtredHtml);
+//        });
+
+//        Course course1 = new Course(1L, "math", "math-desc");
+//        Course course2 = new Course(2L, "language", "land-des");
+//        Course course3 = new Course(3L, "java", "java-des");
+//        List<Course> courses = new ArrayList<>();
+//        courses.add(course1);
+//        courses.add(course2);
+//        courses.add(course3);
+
+
+        app.get("/courses/{id}", ctx -> {
+            var id = ctx.pathParamAsClass("id", Long.class).get();
+
+            Course course = COURSES.stream()
+                    .filter(c -> id.equals(c.getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (course == null) {
+                throw new NotFoundResponse("User not found");
+            }
+
+            CoursePage page = new CoursePage(course);
+            ctx.render("courses/show.jte", Collections.singletonMap("page", page));
+        });
+
+        app.get("/courses", ctx -> {
+            var term = ctx.queryParam("term");
+            List<Course> courses = new ArrayList<>();
+
+            if (term != null) {
+                Set<String> namesCourses = new TreeSet<>();
+                namesCourses = COURSES.stream()
+                        .map(Course::getName)
+                        .collect(Collectors.toSet());
+
+                Set<String> descCourses = new TreeSet<>();
+                descCourses = COURSES.stream()
+                        .map(Course::getDescription)
+                        .collect(Collectors.toSet());
+
+                boolean nameExist = false;
+                for (var name : namesCourses) {
+                    if (name.equals(term)) {
+                        nameExist = true;
+                    }
+                }
+
+                boolean descExist = false;
+                for (var name : descCourses) {
+                    if (name.equals(term)) {
+                        descExist = true;
+                    }
+                }
+
+                if (nameExist) {
+                    Course course = COURSES.stream()
+                            .filter(c  -> c.getName().equals(term))
+                            .findAny()
+                            .orElse(null);
+                    courses.add(course);
+                } else if (descExist) {
+                    Course courseFindForDescr = COURSES.stream()
+                            .filter(c -> c.getDescription().toLowerCase().contains(term.toLowerCase()))
+                            .findAny()
+                            .orElse(null);
+                    courses.add(courseFindForDescr);
+                }
+            } else {
+                courses = COURSES;
+            }
+            CoursesPage page = new CoursesPage(courses, term);
+            ctx.render("courses/index.jte", Collections.singletonMap("page", page));
+
+        });
         app.get("/", ctx -> {
-            ctx.result("Post ID from user " + ctx.pathParam("postId"));
-
+            ctx.render("index.jte");
         });
-
-        app.get("/users/{id}", ctx -> {
-            PolicyFactory policy = new HtmlPolicyBuilder()
-                    .allowElements("a")
-                    .allowUrlProtocols("https")
-                    .allowAttributes("href").onElements("a")
-                    .requireRelNofollowOnLinks()
-                    .toFactory();
-
-            var id = ctx.pathParam("id");
-            var escapedId = StringEscapeUtils.escapeHtml4(id);
-            var filtredHtml = policy.sanitize(escapedId);
-            ctx.contentType("html/text");
-            ctx.result(filtredHtml);
-        });
-
-
 
         return app;
     }
