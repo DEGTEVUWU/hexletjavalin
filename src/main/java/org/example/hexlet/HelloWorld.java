@@ -16,11 +16,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import org.apache.commons.lang3.StringUtils.*;
 import io.javalin.Javalin;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
+
+import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class HelloWorld {
     private static final List<Course> COURSES = Data.getCourses();
@@ -144,30 +146,28 @@ public class HelloWorld {
 
                 boolean nameExist = false;
                 for (var name : namesCourses) {
-                    if (name.equals(term)) {
+                    if (startsWithIgnoreCase(name, term)) {
                         nameExist = true;
+                        break;
                     }
                 }
 
                 boolean descExist = false;
                 for (var name : descCourses) {
-                    if (name.equals(term)) {
+                    if (startsWithIgnoreCase(name, term)) {
                         descExist = true;
+                        break;
                     }
                 }
 
                 if (nameExist) {
-                    Course course = COURSES.stream()
-                            .filter(c  -> c.getName().equals(term))
-                            .findAny()
-                            .orElse(null);
-                    courses.add(course);
+                     courses = COURSES.stream()
+                            .filter(c  -> startsWithIgnoreCase(c.getName(), term))
+                            .collect(Collectors.toList());
                 } else if (descExist) {
-                    Course courseFindForDescr = COURSES.stream()
-                            .filter(c -> c.getDescription().toLowerCase().contains(term.toLowerCase()))
-                            .findAny()
-                            .orElse(null);
-                    courses.add(courseFindForDescr);
+                    courses = COURSES.stream()
+                            .filter(c -> startsWithIgnoreCase(c.getDescription(), term))
+                            .collect(Collectors.toList());
                 }
             } else {
                 courses = COURSES;
