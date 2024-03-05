@@ -17,15 +17,16 @@ content  = @`
         </label>
         <input type="submit" value="Искать">
     </form>
-    @for(var user : page.getUserList())
-        <tr>
-            <td>${user.getId()}</td>
-            <td>
-                <a href="${NamedRoutes.usersPath()}${user.getId()}">${user.getName()} ${user.getLastName()}</a>
-                <br>
-            </td>
-        </tr>
-    @endfor
+    @if(page.getUserList().isEmpty())
+        <p>Пока не добавлено ни одного пользователя</p>
+    @else
+        @for(var user : page.getUserList())
+            <div>
+                <h2><a href="${NamedRoutes.userPath(user.getId())}">${user.getName()} ${user.getLastName()}</a></h2>
+                <p>${user.getEmail()}</p>
+            </div>
+        @endfor
+    @endif
     </body>
 
 `

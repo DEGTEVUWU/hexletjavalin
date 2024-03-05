@@ -17,17 +17,17 @@ content  = @`
         </label>
         <input type="submit" value="Искать">
     </form>
+    @if(page.getCourses().isEmpty())
+        <p>Пока не добавлено ни одного курса</p>
+        @else
     @for(var course : page.getCourses())
-        <tr>
-            <td>${course.getId()}</td>
-            <td>
-                <a href="${NamedRoutes.coursesPath()}${course.getId()}">${course.getName()} ${course.getDescription()}</a>
-                <br>
-            </td>
-        </tr>
+        <div>
+            <h2><a href="${NamedRoutes.coursePath(course.getId())}">${course.getName()}</a></h2>
+            <p>${course.getDescription()}</p>
+        </div>
     @endfor
+        @endif
     </body>
-
 `
 ,
 footer = @`
