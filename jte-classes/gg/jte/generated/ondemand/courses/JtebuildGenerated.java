@@ -1,8 +1,9 @@
 package gg.jte.generated.ondemand.courses;
 import org.example.hexlet.dto.courses.BuildCoursePage;
+import org.example.hexlet.utils.NamedRoutes;
 public final class JtebuildGenerated {
 	public static final String JTE_NAME = "courses/build.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,1,1,4,4,8,8,9,9,11,11,12,12,13,13,13,14,14,15,15,17,17,23,23,23,23,23,23,23,23,29,29,29,29,29,29,29,29,46,46,46,46,53,53,53};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,5,5,9,9,10,10,12,12,13,13,14,14,14,15,15,16,16,18,18,20,20,20,20,20,20,20,20,24,24,24,24,24,24,24,24,30,30,30,30,30,30,30,30,35,35,35,35,42,42,42};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, BuildCoursePage page) {
 		jteOutput.writeContent("\r\n\r\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -22,7 +23,15 @@ public final class JtebuildGenerated {
 					}
 					jteOutput.writeContent("\r\n        </ul>\r\n    ");
 				}
-				jteOutput.writeContent("\r\n\r\n    <form action=\"/courses\" method=\"post\">\r\n        <div>\r\n            <label>\r\n                Название курса\r\n                <input type=\"text\" name=\"name\"");
+				jteOutput.writeContent("\r\n\r\n    <form");
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(NamedRoutes.coursesPath())) {
+					jteOutput.writeContent(" action=\"");
+					jteOutput.setContext("form", "action");
+					jteOutput.writeUserContent(NamedRoutes.coursesPath());
+					jteOutput.setContext("form", null);
+					jteOutput.writeContent("\"");
+				}
+				jteOutput.writeContent(" method=\"post\">\r\n        <div>\r\n            <label>\r\n                Название курса\r\n                <input type=\"text\" name=\"name\"");
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(page.getName())) {
 					jteOutput.writeContent(" value=\"");
 					jteOutput.setContext("input", "value");
@@ -30,15 +39,15 @@ public final class JtebuildGenerated {
 					jteOutput.setContext("input", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent("/>\r\n            </label>\r\n        </div>\r\n        <div>\r\n            <label>\r\n                Описание курса\r\n                <input type=\"text\" required name=\"name\"");
+				jteOutput.writeContent("/>\r\n            </label>\r\n        </div>\r\n        <div>\r\n            <label>\r\n                Описание курса\r\n                <textarea required name=\"description\" rows=\"6\" cols=\"30\"");
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(page.getDescription())) {
 					jteOutput.writeContent(" value=\"");
-					jteOutput.setContext("input", "value");
+					jteOutput.setContext("textarea", "value");
 					jteOutput.writeUserContent(page.getDescription());
-					jteOutput.setContext("input", null);
+					jteOutput.setContext("textarea", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent("/>\r\n            </label>\r\n        </div>\r\n        <div>\r\n            <label>\r\n                Пароль для курса\r\n                <input type=\"password\" required name=\"password\" />\r\n            </label>\r\n        </div>\r\n        <div>\r\n            <label>\r\n                Подтверждение пароля\r\n                <input type=\"password\" required name=\"passwordConfirmation\" />\r\n            </label>\r\n        </div>\r\n        <input type=\"submit\" value=\"Зарегистрировать\" />\r\n    </form>\r\n");
+				jteOutput.writeContent("></textarea>\r\n            </label>\r\n        </div>\r\n        <input type=\"submit\" value=\"Зарегистрировать\" />\r\n    </form>\r\n");
 			}
 		}, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {

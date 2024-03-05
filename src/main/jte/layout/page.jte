@@ -1,4 +1,5 @@
 @import gg.jte.Content
+@import org.example.hexlet.utils.NamedRoutes
 @param Content content = null
 @param Content footer = null
 
@@ -21,19 +22,19 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Главная</a>
+                <a class="nav-link" href="${NamedRoutes.mainPath()}">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/courses">Все курсы</a>
+                <a class="nav-link" href="${NamedRoutes.coursesPath()}">Все курсы</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/users">Все пользователи</a>
+                <a class="nav-link" href="${NamedRoutes.usersPath()}">Все пользователи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/courses/build">Зарегистрировать курс</a>
+                <a class="nav-link" href="${NamedRoutes.buildCoursesPath()}">Зарегистрировать курс</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/users/build">Зарегистрировать пользователя</a>
+                <a class="nav-link" href="${NamedRoutes.buildUserPath()}">Зарегистрировать пользователя</a>
             </li>
         </ul>
     </div>

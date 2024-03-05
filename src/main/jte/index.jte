@@ -1,4 +1,5 @@
 @import gg.jte.Content
+@import org.example.hexlet.utils.NamedRoutes
 @param Content content
 
 @template.layout.page(
@@ -7,9 +8,9 @@ content  = @`
     <h2>Подзаголовок! Если ты читаешь - пожалуйста, пользуйся</h2>
     <h4>Тут ты увидишь:</h4>
     <ul>
-        <li><a href="/">Главную страницу</a></li>
-        <li><a href="/courses/">Список всех курсов</a></li>
-        <li><a href="/users/">Список всех юзеров</a></li>
+        <li><a href="${NamedRoutes.mainPath()}">Главную страницу</a></li>
+        <li><a href="${NamedRoutes.coursesPath()}">Список всех курсов</a></li>
+        <li><a href="${NamedRoutes.usersPath()}">Список всех юзеров</a></li>
         <li><a>Инфу про каждый курс</a></li>
         <li><a>Инфу про каждого юзера</a></li>
     </ul>

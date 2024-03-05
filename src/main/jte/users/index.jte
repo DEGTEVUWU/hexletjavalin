@@ -1,5 +1,6 @@
 @import org.example.hexlet.dto.users.UsersPage
 @import org.example.hexlet.model.User
+@import org.example.hexlet.utils.NamedRoutes
 
 @param UsersPage page
 
@@ -10,7 +11,7 @@ content  = @`
     <h1>${"Это лист со всеми доступными юзерами!"}</h1>
     <br>
     <h4>${"Вы можете найти юзера по имени"}</h4>
-    <form action="/users" method="get">
+    <form action="${NamedRoutes.usersPath()}" method="get">
         <label>
             <input type="search" name="term" value="${page.getTerm()}">
         </label>
@@ -20,7 +21,7 @@ content  = @`
         <tr>
             <td>${user.getId()}</td>
             <td>
-                <a href="/users/${user.getId()}">${user.getName()} ${user.getLastName()}</a>
+                <a href="${NamedRoutes.usersPath()}${user.getId()}">${user.getName()} ${user.getLastName()}</a>
                 <br>
             </td>
         </tr>

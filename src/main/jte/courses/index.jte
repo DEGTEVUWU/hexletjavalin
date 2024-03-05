@@ -1,5 +1,6 @@
 @import org.example.hexlet.model.Course
 @import org.example.hexlet.dto.courses.CoursesPage
+@import org.example.hexlet.utils.NamedRoutes
 
 @param CoursesPage page
 
@@ -10,7 +11,7 @@ content  = @`
     <h1>${"Это лист со всеми доступными курсами!"}</h1>
     <br>
     <h4>${"Вы можете найти курс по имени"}</h4>
-    <form action="/courses" method="get">
+    <form action="${NamedRoutes.coursesPath()}" method="get">
         <label>
             <input type="search" name="term" value="${page.getTerm()}">
         </label>
@@ -20,7 +21,7 @@ content  = @`
         <tr>
             <td>${course.getId()}</td>
             <td>
-                <a href="/courses/${course.getId()}">${course.getName()} ${course.getDescription()}</a>
+                <a href="${NamedRoutes.coursesPath()}${course.getId()}">${course.getName()} ${course.getDescription()}</a>
                 <br>
             </td>
         </tr>
