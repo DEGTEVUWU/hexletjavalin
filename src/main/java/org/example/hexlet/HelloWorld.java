@@ -5,11 +5,14 @@ import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.validation.ValidationException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.example.hexlet.data.DataCourses;
 import org.example.hexlet.data.DataUsers;
+import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.courses.CoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
+import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.Course;
@@ -122,39 +125,51 @@ public class HelloWorld {
 
 
         app.get("/users/build", ctx -> {
-            ctx.render("users/build.jte");
+            var page = new BuildUserPage();
+            ctx.render("users/build.jte", Collections.singletonMap("page", page));
         });
 
         app.get("/courses/build", ctx -> {
-            ctx.render("courses/build.jte");
+            var page = new BuildCoursePage();
+            ctx.render("courses/build.jte", Collections.singletonMap("page", page));
         });
 
         app.post("/users", ctx -> {
             var name = ctx.formParam("name");
             var email = ctx.formParam("email").trim().toLowerCase();
-            var password = ctx.formParam("password");
-            var passwordConfirmation = ctx.formParam("passwordConfirmation");
 
-            if (!passwordConfirmation.equals(password)) {
-                throw new NotFoundResponse("Password mismatch!");
+            try {
+                var passwordConfirmation = ctx.formParam("passwordConfirmation");
+                var password = ctx.formParamAsClass("password", String.class)
+                        .check(value -> value.equals(passwordConfirmation), "Password mismatch!")
+                        .check(value -> value.length() > 4, "Password is too short!")
+                        .get();
+                User user = new User(name, email, password);
+                UserRepository.save(user);
+                ctx.redirect("/users");
+            } catch (ValidationException e) {
+                var page = new BuildUserPage(name, email, e.getErrors());
+                ctx.render("users/build.jte", Collections.singletonMap("page", page));
             }
-            var user = new User(name, email, password);
-            UserRepository.save(user);
-            ctx.redirect("/users");
         });
 
         app.post("/courses", ctx -> {
-            var name = ctx.formParam("name");
-            var description = ctx.formParam("description");
-            var password = ctx.formParam("password");
-            var passwordConfirmation = ctx.formParam("passwordConfirmation");
-
-            if (!passwordConfirmation.equals(password)) {
-                throw new NotFoundResponse("Password mismatch!");
+            try {
+                var name = ctx.formParamAsClass("name", String.class)
+                        .check(value -> value.length() > 2, "Название курса слишком короткое!")
+                        .get();
+                var description = ctx.formParamAsClass("description", String.class)
+                        .check(value -> value.length() > 10, "Описание курса слишком короткое!")
+                        .get();
+                var passwordConfirmation = ctx.formParam("passwordConfirmation");
+                var password = ctx.formParam("password");
+                var course = new Course(name, description, password);
+                CourseRepository.save(course);
+                ctx.redirect("/courses");
+            } catch (ValidationException e) {
+                var page = new BuildCoursePage(e.getErrors());
+                ctx.render("courses/build.jte", Collections.singletonMap("page", page));
             }
-            var course = new Course(name, description, password);
-            CourseRepository.save(course);
-            ctx.redirect("/courses");
         });
 
         app.get("/users/{id}", ctx -> {

@@ -29,6 +29,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/users">Все пользователи</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/courses/build">Зарегистрировать курс</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users/build">Зарегистрировать пользователя</a>
+            </li>
         </ul>
     </div>
 </nav>
