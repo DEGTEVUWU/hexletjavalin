@@ -11,4 +11,7 @@ import java.util.List;
 public class UsersPage {
     public List<User> userList;
     public String term;
+    public UsersPage(List<User> userList) {
+        this.userList = userList;
+    }
 }
