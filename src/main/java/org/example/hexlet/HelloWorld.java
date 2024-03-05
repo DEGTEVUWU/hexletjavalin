@@ -79,7 +79,7 @@ public class HelloWorld {
                         .get();
                 User user = new User(name, email, password);
                 UserRepository.save(user);
-                ctx.redirect("/users");
+                ctx.redirect(NamedRoutes.usersPath());
             } catch (ValidationException e) {
                 var page = new BuildUserPage(name, email, e.getErrors());
                 ctx.status(422).render("users/build.jte", Collections.singletonMap("page", page));
@@ -101,7 +101,7 @@ public class HelloWorld {
                         .get();
                 var course = new Course(name, description);
                 CourseRepository.save(course);
-                ctx.redirect("/courses");
+                ctx.redirect(NamedRoutes.coursesPath());
             } catch (ValidationException e) {
                 var page = new BuildCoursePage(name, description, e.getErrors());
                 ctx.status(422).render("courses/build.jte", Collections.singletonMap("page", page));
