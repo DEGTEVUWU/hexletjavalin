@@ -3,6 +3,7 @@ package org.example.hexlet.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.example.hexlet.model.Course;
 
@@ -30,5 +31,10 @@ public class CourseRepository {
 
     public static List<Course> getEntities() {
         return entities;
+    }
+    public static void delete(Long id) {
+        entities = entities.stream()
+                .filter(course -> !course.getId().equals(id))
+                .collect(Collectors.toList());
     }
 }

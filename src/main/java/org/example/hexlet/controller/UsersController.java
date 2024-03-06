@@ -1,7 +1,7 @@
 package org.example.hexlet.controller;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.utils.NamedRoutes;
@@ -14,23 +14,62 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 
+import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
+
 public class UsersController {
     public static void index(Context ctx) {
         List<User> users = UserRepository.getEntities();
-        var page = new UsersPage(users);
+
+        var term = ctx.queryParam("term");
+        List<User> finalUsersList = new ArrayList<>();
+
+        if (term != null) {
+            Set<String> namesUsers = new TreeSet<>();
+            namesUsers = users.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toSet());
+
+            Set<String> mailUsers = new TreeSet<>();
+            mailUsers = users.stream()
+                    .map(User::getEmail)
+                    .collect(Collectors.toSet());
+
+            boolean nameExist = false;
+            for (var name : namesUsers) {
+                if (startsWithIgnoreCase(name, term)) {
+                    nameExist = true;
+                    break;
+                }
+            }
+
+            boolean mailExist = false;
+            for (var name : mailUsers) {
+                if (startsWithIgnoreCase(name, term)) {
+                    mailExist = true;
+                    break;
+                }
+            }
+
+            if (nameExist) {
+                finalUsersList = users.stream()
+                        .filter(u  -> startsWithIgnoreCase(u.getName(), term))
+                        .collect(Collectors.toList());
+            } else if (mailExist) {
+                finalUsersList = users.stream()
+                        .filter(u -> startsWithIgnoreCase(u.getEmail(), term))
+                        .collect(Collectors.toList());
+            }
+        } else {
+            finalUsersList = users;
+        }
+        UsersPage page = new UsersPage(finalUsersList, term);
         ctx.render("users/index.jte", Collections.singletonMap("page", page));
     }
 
     public static void show(Context ctx) {
-//        var id = ctx.pathParamAsClass("id", Long.class).get();
-//        var user = UserRepository.find(id)
-//                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-//        var page = new UserPage(user);
-//        ctx.render("users/show.jte", Collections.singletonMap("page", page));
-
         var id = ctx.pathParamAsClass("id", Long.class).get();
         User user = UserRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Entity with id = \" + id + \" not found"));
+                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
 
         UserPage page = new UserPage(user);
         ctx.render("users/show.jte", Collections.singletonMap("page", page));
