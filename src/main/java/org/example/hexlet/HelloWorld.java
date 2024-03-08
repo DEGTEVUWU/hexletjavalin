@@ -25,9 +25,8 @@ import org.example.hexlet.model.User;
 import org.example.hexlet.repository.CourseRepository;
 import org.example.hexlet.repository.PostRepository;
 import org.example.hexlet.repository.UserRepository;
-import org.example.hexlet.utils.CourseNamedRoutes;
-import org.example.hexlet.utils.NamedRoutes;
-import org.example.hexlet.utils.PostsNamedRoutes;
+import org.example.hexlet.utils.*;
+import org.example.hexlet.utils.UserNamedRoutes;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import java.io.IOException;
@@ -57,10 +56,10 @@ public class HelloWorld {
 
 
         //work with users
-        app.get(NamedRoutes.usersPath(), UsersController::index);
-        app.get(NamedRoutes.buildUserPath(), UsersController::build);
-        app.post(NamedRoutes.usersPath(), UsersController::create);
-        app.get(NamedRoutes.userPath("{id}"), UsersController::show);
+        app.get(UserNamedRoutes.usersPath(), UsersController::index);
+        app.get(UserNamedRoutes.buildUserPath(), UsersController::build);
+        app.post(UserNamedRoutes.usersPath(), UsersController::create);
+        app.get(UserNamedRoutes.userPath("{id}"), UsersController::show);
 
 
 
@@ -84,7 +83,7 @@ public class HelloWorld {
         app.post(PostsNamedRoutes.postPath("{id}"), PostsController::update);
 
 
-        app.get(NamedRoutes.mainPath(), ctx -> {
+        app.get(RootNamedRoutes.mainPath(), ctx -> {
             Boolean visited = Boolean.valueOf(ctx.cookie("visited"));
             MainPage page = new MainPage(visited);
 

@@ -1,8 +1,9 @@
 @import gg.jte.Content
 @import org.example.hexlet.model.Course
-@import org.example.hexlet.utils.CourseNamedRoutes
-@import org.example.hexlet.utils.NamedRoutes
+@import org.example.hexlet.utils.*
+@import org.example.hexlet.utils.UserNamedRoutes
 @import org.example.hexlet.utils.PostsNamedRoutes
+@import org.example.hexlet.utils.UserNamedRoutes
 @param Content content = null
 @param Content footer = null
 
@@ -25,13 +26,13 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="${NamedRoutes.mainPath()}">Главная</a>
+                <a class="nav-link" href="${RootNamedRoutes.mainPath()}">Главная</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${CourseNamedRoutes.coursesPath()}">Все курсы</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${NamedRoutes.usersPath()}">Все пользователи</a>
+                <a class="nav-link" href="${UserNamedRoutes.usersPath()}">Все пользователи</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${PostsNamedRoutes.postsPath()}">Все посты</a>
@@ -40,7 +41,7 @@
                 <a class="nav-link" href="${CourseNamedRoutes.buildCoursesPath()}">Написать курс</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${NamedRoutes.buildUserPath()}">Зарегистрировать пользователя</a>
+                <a class="nav-link" href="${UserNamedRoutes.buildUserPath()}">Зарегистрировать пользователя</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${PostsNamedRoutes.buildPostsPath()}">Написать пост</a>

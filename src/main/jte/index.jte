@@ -1,7 +1,7 @@
 @import gg.jte.Content
 @import org.example.hexlet.dto.MainPage
-@import org.example.hexlet.utils.CourseNamedRoutes
-@import org.example.hexlet.utils.NamedRoutes
+@import org.example.hexlet.utils.*
+@import org.example.hexlet.utils.UserNamedRoutes
 @import org.example.hexlet.utils.PostsNamedRoutes
 
 @param MainPage page
@@ -17,9 +17,9 @@ content  = @`
             @endif
     <h4>Тут ты увидишь:</h4>
     <ul>
-        <li><a href="${NamedRoutes.mainPath()}">Главную страницу</a></li>
+        <li><a href="${RootNamedRoutes.mainPath()}">Главную страницу</a></li>
         <li><a href="${CourseNamedRoutes.coursesPath()}">Список всех курсов</a></li>
-        <li><a href="${NamedRoutes.usersPath()}">Список всех юзеров</a></li>
+        <li><a href="${UserNamedRoutes.usersPath()}">Список всех юзеров</a></li>
         <li><a href="${PostsNamedRoutes.postsPath()}">Список всех постов</a> </li>
         <li><a>Инфу про каждый курс</a></li>
         <li><a>Инфу про каждого юзера</a></li>

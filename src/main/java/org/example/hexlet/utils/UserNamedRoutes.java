@@ -1,11 +1,6 @@
 package org.example.hexlet.utils;
 
-public class NamedRoutes {
-
-    //маршрут главной страницы
-    public static String mainPath() {
-        return "/";
-    }
+public class UserNamedRoutes {
 
     //маршрут всех пользователей
     public static String usersPath() {

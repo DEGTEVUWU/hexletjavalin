@@ -13,7 +13,7 @@ import org.example.hexlet.model.Course;
 import org.example.hexlet.model.Post;
 import org.example.hexlet.repository.CourseRepository;
 import org.example.hexlet.repository.PostRepository;
-import org.example.hexlet.utils.NamedRoutes;
+import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 
 import java.util.ArrayList;

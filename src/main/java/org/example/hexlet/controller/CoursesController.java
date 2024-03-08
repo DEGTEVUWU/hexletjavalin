@@ -10,7 +10,7 @@ import org.example.hexlet.model.Course;
 import org.example.hexlet.repository.CourseRepository;
 import org.example.hexlet.repository.PostRepository;
 import org.example.hexlet.utils.CourseNamedRoutes;
-import org.example.hexlet.utils.NamedRoutes;
+import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.User;

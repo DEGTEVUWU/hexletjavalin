@@ -1,8 +1,8 @@
 package gg.jte.generated.ondemand;
 import gg.jte.Content;
 import org.example.hexlet.dto.MainPage;
-import org.example.hexlet.utils.CourseNamedRoutes;
-import org.example.hexlet.utils.NamedRoutes;
+import org.example.hexlet.utils.*;
+import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
@@ -16,10 +16,10 @@ public final class JteindexGenerated {
 					jteOutput.writeContent("\r\n            <h2>Это сообщение показывается лишь единожды! Если хочешь снова - сотри куки!</h2>\r\n            ");
 				}
 				jteOutput.writeContent("\r\n    <h4>Тут ты увидишь:</h4>\r\n    <ul>\r\n        <li><a");
-				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(NamedRoutes.mainPath())) {
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(RootNamedRoutes.mainPath())) {
 					jteOutput.writeContent(" href=\"");
 					jteOutput.setContext("a", "href");
-					jteOutput.writeUserContent(NamedRoutes.mainPath());
+					jteOutput.writeUserContent(RootNamedRoutes.mainPath());
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}
@@ -32,10 +32,10 @@ public final class JteindexGenerated {
 					jteOutput.writeContent("\"");
 				}
 				jteOutput.writeContent(">Список всех курсов</a></li>\r\n        <li><a");
-				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(NamedRoutes.usersPath())) {
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(UserNamedRoutes.usersPath())) {
 					jteOutput.writeContent(" href=\"");
 					jteOutput.setContext("a", "href");
-					jteOutput.writeUserContent(NamedRoutes.usersPath());
+					jteOutput.writeUserContent(UserNamedRoutes.usersPath());
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}

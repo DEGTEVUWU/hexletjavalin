@@ -1,7 +1,7 @@
 @import org.example.hexlet.model.Course
 @import org.example.hexlet.dto.courses.CoursesPage
 @import org.example.hexlet.utils.CourseNamedRoutes
-@import org.example.hexlet.utils.NamedRoutes
+@import org.example.hexlet.utils.UserNamedRoutes
 
 @param CoursesPage page
 
@@ -11,7 +11,6 @@ content  = @`
 <div class="mx-auto p-4 py-md-5">
     <main>
     <h1>${"Это лист со всеми доступными курсами!"}</h1>
-    <br>
 
     <h4>${"Вы можете найти курс по имени"}</h4>
     <form action="${CourseNamedRoutes.coursesPath()}" method="get">

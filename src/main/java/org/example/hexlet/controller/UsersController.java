@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.example.hexlet.dto.users.BuildUserPage;
-import org.example.hexlet.utils.NamedRoutes;
+import org.example.hexlet.model.Post;
+import org.example.hexlet.repository.PostRepository;
+import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.User;
@@ -13,16 +15,18 @@ import org.example.hexlet.repository.UserRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
+import org.example.hexlet.utils.UserNamedRoutes;
 
 import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class UsersController {
     public static void index(Context ctx) {
         List<User> users = UserRepository.getEntities();
-
+        List<User> finalUsersList = new ArrayList<>(users);
         var term = ctx.queryParam("term");
-        List<User> finalUsersList = new ArrayList<>();
 
+
+        //код для поиска юзера по имени и мэйлу
         if (term != null) {
             Set<String> namesUsers = new TreeSet<>();
             namesUsers = users.stream()
@@ -62,7 +66,25 @@ public class UsersController {
         } else {
             finalUsersList = users;
         }
-        UsersPage page = new UsersPage(finalUsersList, term);
+
+        //создание страни по 5 элементов из списка юзеров на каждой
+        int pageNumber = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+        int quantity = 5;
+        int begin = (pageNumber - 1) * quantity;
+        int end = begin + quantity;
+        int previousPage = pageNumber == 1 ? 1 : pageNumber - 1;
+        int nextPage = pageNumber + 1;
+        List<User> sliceOfUsers;
+
+        if(begin >= users.size()) {
+            sliceOfUsers = new ArrayList<>();
+        } else if (end >= users.size()) {
+            sliceOfUsers = finalUsersList.subList(begin, users.size());
+        } else {
+            sliceOfUsers = finalUsersList.subList(begin, end);
+        }
+
+        UsersPage page = new UsersPage(sliceOfUsers, pageNumber, previousPage, nextPage, term);
         ctx.render("users/index.jte", Collections.singletonMap("page", page));
     }
 
@@ -98,7 +120,7 @@ public class UsersController {
                     .get();
             User user = new User(name, email, password);
             UserRepository.save(user);
-            ctx.redirect(NamedRoutes.usersPath());
+            ctx.redirect(UserNamedRoutes.usersPath());
         } catch (ValidationException e) {
             var page = new BuildUserPage(name, email, e.getErrors());
             ctx.status(422).render("users/build.jte", Collections.singletonMap("page", page));
@@ -127,12 +149,12 @@ public class UsersController {
         user.setEmail(email);
         user.setPassword(password);
         UserRepository.save(user);
-        ctx.redirect(NamedRoutes.usersPath());
+        ctx.redirect(UserNamedRoutes.usersPath());
     }
 
     public static void destroy(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         UserRepository.delete(id);
-        ctx.redirect(NamedRoutes.usersPath());
+        ctx.redirect(UserNamedRoutes.usersPath());
     }
 }
