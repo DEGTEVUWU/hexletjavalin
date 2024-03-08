@@ -12,6 +12,7 @@ import org.example.hexlet.controller.PostsController;
 import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.data.DataCourses;
 import org.example.hexlet.data.DataUsers;
+import org.example.hexlet.dto.MainPage;
 import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.courses.CoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
@@ -78,7 +79,11 @@ public class HelloWorld {
 
 
         app.get(NamedRoutes.mainPath(), ctx -> {
-            ctx.render("index.jte");
+            Boolean visited = Boolean.valueOf(ctx.cookie("visited"));
+            MainPage page = new MainPage(visited);
+
+            ctx.render("index.jte", Collections.singletonMap("page", page));
+            ctx.cookie("visited", String.valueOf(true));
         });
 
         return app;
