@@ -141,7 +141,6 @@ public class CoursesController {
 
             course.setName(name);
             course.setDescription(description);
-            CourseRepository.save(course);
 
             ctx.redirect(CourseNamedRoutes.coursesPath());
 

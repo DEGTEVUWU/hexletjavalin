@@ -25,7 +25,8 @@ content = @`
             </div>
             <div class="mb-3">
                 <label class="form-label">Изменить описание</label>
-                <textarea class="form-control" rows="20" cols="70" type="text" name="body">${page.getDescription()}></textarea>
+                <textarea class="form-control" rows="20" cols="70" type="text" name="description">${page.getDescription()}
+                </textarea>
             </div>
             <input type="submit" class="btn btn-primary" value="Обновить" />
         </form>
