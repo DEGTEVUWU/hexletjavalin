@@ -25,6 +25,7 @@ import org.example.hexlet.model.User;
 import org.example.hexlet.repository.CourseRepository;
 import org.example.hexlet.repository.PostRepository;
 import org.example.hexlet.repository.UserRepository;
+import org.example.hexlet.utils.CourseNamedRoutes;
 import org.example.hexlet.utils.NamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 import org.owasp.html.HtmlPolicyBuilder;
@@ -62,11 +63,16 @@ public class HelloWorld {
         app.get(NamedRoutes.userPath("{id}"), UsersController::show);
 
 
+
+
         //work with courses
-        app.get(NamedRoutes.buildCoursesPath(), CoursesController::build);
-        app.post(NamedRoutes.coursesPath(), CoursesController::create);
-        app.get(NamedRoutes.coursePath("{id}"), CoursesController::show);
-        app.get(NamedRoutes.coursesPath(), CoursesController::index);
+        app.get(CourseNamedRoutes.buildCoursesPath(), CoursesController::build);
+        app.post(CourseNamedRoutes.coursesPath(), CoursesController::create);
+        app.get(CourseNamedRoutes.coursePath("{id}"), CoursesController::show);
+        app.get(CourseNamedRoutes.coursesPath(), CoursesController::index);
+        app.get(CourseNamedRoutes.editCoursePath("{id}"), CoursesController::edit);
+        app.post(CourseNamedRoutes.coursePath("{id}"), CoursesController::update);
+
 
 
         //work with posts

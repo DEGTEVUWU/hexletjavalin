@@ -21,4 +21,12 @@ content = @`
         <!-- END -->
     </main>
 `
+    ,
+footer = @`
+    <div class="footer">
+        <a>Спасибо, что посетили мой сайт! И в особенности эту страницу с полной информацией о посте №
+            ${page.getPost().getId()}!</a>
+        <a href="https://github.com/DEGTEVUWU">Дёгтев Иван - профиль на GitHub</a>
+    </div>
+`
 )

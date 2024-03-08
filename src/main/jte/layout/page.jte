@@ -1,4 +1,6 @@
 @import gg.jte.Content
+@import org.example.hexlet.model.Course
+@import org.example.hexlet.utils.CourseNamedRoutes
 @import org.example.hexlet.utils.NamedRoutes
 @import org.example.hexlet.utils.PostsNamedRoutes
 @param Content content = null
@@ -26,7 +28,7 @@
                 <a class="nav-link" href="${NamedRoutes.mainPath()}">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${NamedRoutes.coursesPath()}">Все курсы</a>
+                <a class="nav-link" href="${CourseNamedRoutes.coursesPath()}">Все курсы</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${NamedRoutes.usersPath()}">Все пользователи</a>
@@ -35,7 +37,7 @@
                 <a class="nav-link" href="${PostsNamedRoutes.postsPath()}">Все посты</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${NamedRoutes.buildCoursesPath()}">Написать курс</a>
+                <a class="nav-link" href="${CourseNamedRoutes.buildCoursesPath()}">Написать курс</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${NamedRoutes.buildUserPath()}">Зарегистрировать пользователя</a>

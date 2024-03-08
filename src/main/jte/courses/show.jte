@@ -1,12 +1,25 @@
 @import org.example.hexlet.dto.courses.CoursePage
 @import org.example.hexlet.model.Course
+@import org.example.hexlet.utils.CourseNamedRoutes
+@import org.example.hexlet.utils.NamedRoutes
 @param CoursePage page
 
 @template.layout.page(
 content  = @`
-    <div>
-        ${page.getCourse().getId()} ${page.getCourse().getName()} ${page.getCourse().getDescription()}
-    </div>
+    <main>
+        <div class="mx-auto p-4 py-md-5">
+            <h1>${page.getCourse().getName()}</h1>
+        </div>
+
+        <div class="mx-auto p-4 py-md-5">
+            ${page.getCourse().getDescription()}
+        </div>
+        <!-- BEGIN -->
+        <div class="mx-auto p-4 py-md-5">
+            <a href="${CourseNamedRoutes.editCoursePath(page.getCourse().getId())}">Редактировать</a>
+        </div>
+        <!-- END -->
+    </main>
 `
 ,
 footer = @`

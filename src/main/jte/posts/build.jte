@@ -15,15 +15,16 @@ content  = @`
         </ul>
     @endif
 
+        <div class="mx-auto p-4 py-md-5">
     <form action="${PostsNamedRoutes.postsPath()}" method="post">
-        <div>
-            <label>
+            <div class="mb-3">
+                <label class="form-label">
                 Название поста
                 <input type="text" name="name" value="${page.getName()}"/>
             </label>
         </div>
-        <div>
-            <label>
+            <div class="mb-3">
+                <label class="form-label">
                 Содержание поста
                 <textarea required name="content" rows="6" cols="30" value="${page.getBody()}"></textarea>
             </label>
@@ -34,8 +35,8 @@ content  = @`
 ,
 footer = @`
     <div class="footer">
-        <a>Спасибо, что посетили мой сайт! И в особенности эту страницу с регистрацией нового пользоватея!
-            Зарегайся, краб и чекни, что будет..</a>
+        <a>Спасибо, что посетили мой сайт! И в особенности эту страницу с созданием нового поста!
+            Создай его, краб и чекни, что будет..</a>
         <br>
         <a href="https://github.com/DEGTEVUWU">Дёгтев Иван - профиль на GitHub</a>
     </div>

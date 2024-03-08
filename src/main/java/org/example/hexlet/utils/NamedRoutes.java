@@ -17,15 +17,7 @@ public class NamedRoutes {
         return "/users/build";
     }
 
-    //маршрут всех курсов
-    public static String coursesPath() {
-        return "/courses";
-    }
 
-    //маршрут создания курса
-    public static String buildCoursesPath() {
-        return "/courses/build";
-    }
 
     // преобразование айди юзера в строку
     public static String userPath(Long id) {
@@ -37,13 +29,4 @@ public class NamedRoutes {
         return "/users/" + id;
     }
 
-    //преобразование айди курса в строку
-    public static String coursePath(Long id) {
-        return coursePath(String.valueOf(id));
-    }
-
-    //маршрут для конкретного курса
-    public static String coursePath(String id) {
-        return "/courses/" + id;
-    }
 }

@@ -3,9 +3,13 @@ package org.example.hexlet.controller;
 import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.courses.CoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
+import org.example.hexlet.dto.courses.EditCoursePage;
+import org.example.hexlet.dto.posts.EditPostPage;
 import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.model.Course;
 import org.example.hexlet.repository.CourseRepository;
+import org.example.hexlet.repository.PostRepository;
+import org.example.hexlet.utils.CourseNamedRoutes;
 import org.example.hexlet.utils.NamedRoutes;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
@@ -15,6 +19,7 @@ import org.example.hexlet.repository.UserRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
+import org.example.hexlet.utils.PostsNamedRoutes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,7 +106,7 @@ public class CoursesController {
 
             Course course = new Course(name, description);
             CourseRepository.save(course);
-            ctx.redirect(NamedRoutes.coursesPath());
+            ctx.redirect(CourseNamedRoutes.coursesPath());
         } catch (ValidationException e) {
             var page = new BuildCoursePage(name, description, e.getErrors());
             ctx.status(422).render("courses/build.jte", Collections.singletonMap("page", page));
@@ -111,29 +116,46 @@ public class CoursesController {
     public static void edit(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var course = CourseRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var page = new CoursePage(course);
+                .orElseThrow(() -> new NotFoundResponse("Course not found"));
+
+        var page = new EditCoursePage(id, course.getName(), course.getDescription(), null);
         ctx.render("courses/edit.jte", Collections.singletonMap("page", page));
     }
 
 
     public static void update(Context ctx) {
+
         var id = ctx.pathParamAsClass("id", Long.class).get();
 
-        var name = ctx.formParam("name");
-        var description = ctx.formParam("description");
+        try {
+            var name = ctx.formParamAsClass("name", String.class)
+                    .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
+                    .get();
 
-        var course = CourseRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        course.setName(name);
-        course.setDescription(description);
-        CourseRepository.save(course);
-        ctx.redirect(NamedRoutes.coursesPath());
+            var description = ctx.formParamAsClass("description", String.class)
+                    .check(value -> value.length() >= 10, "Описание курса должен быть не короче 10 символов")
+                    .get();
+
+            var course = CourseRepository.find(id)
+                    .orElseThrow(() -> new NotFoundResponse("Course not found"));
+
+            course.setName(name);
+            course.setDescription(description);
+            CourseRepository.save(course);
+
+            ctx.redirect(CourseNamedRoutes.coursesPath());
+
+        } catch (ValidationException e) {
+            var name = ctx.formParam("name");
+            var description = ctx.formParam("description");
+            var page = new EditCoursePage(id, name, description, e.getErrors());
+            ctx.render("courses/edit.jte", Collections.singletonMap("page", page)).status(422);
+        }
     }
 
     public static void destroy(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         CourseRepository.delete(id);
-        ctx.redirect(NamedRoutes.coursesPath());
+        ctx.redirect(CourseNamedRoutes.coursesPath());
     }
 }

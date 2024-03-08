@@ -1,11 +1,12 @@
 package gg.jte.generated.ondemand;
 import gg.jte.Content;
 import org.example.hexlet.dto.MainPage;
+import org.example.hexlet.utils.CourseNamedRoutes;
 import org.example.hexlet.utils.NamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,5,5,5,8,8,12,12,16,16,18,18,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,29,29,29,29,33,33,33};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,6,6,6,9,9,13,13,17,17,19,19,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,30,30,30,30,34,34,34};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, MainPage page, Content content) {
 		jteOutput.writeContent("\r\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -23,10 +24,10 @@ public final class JteindexGenerated {
 					jteOutput.writeContent("\"");
 				}
 				jteOutput.writeContent(">Главную страницу</a></li>\r\n        <li><a");
-				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(NamedRoutes.coursesPath())) {
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(CourseNamedRoutes.coursesPath())) {
 					jteOutput.writeContent(" href=\"");
 					jteOutput.setContext("a", "href");
-					jteOutput.writeUserContent(NamedRoutes.coursesPath());
+					jteOutput.writeUserContent(CourseNamedRoutes.coursesPath());
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}
