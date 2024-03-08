@@ -1,5 +1,6 @@
 @import gg.jte.Content
 @import org.example.hexlet.utils.NamedRoutes
+@import org.example.hexlet.utils.PostsNamedRoutes
 @param Content content = null
 @param Content footer = null
 
@@ -31,10 +32,16 @@
                 <a class="nav-link" href="${NamedRoutes.usersPath()}">Все пользователи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${NamedRoutes.buildCoursesPath()}">Зарегистрировать курс</a>
+                <a class="nav-link" href="${PostsNamedRoutes.postsPath()}">Все посты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${NamedRoutes.buildCoursesPath()}">Написать курс</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${NamedRoutes.buildUserPath()}">Зарегистрировать пользователя</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${PostsNamedRoutes.buildPostsPath()}">Написать пост</a>
             </li>
         </ul>
     </div>

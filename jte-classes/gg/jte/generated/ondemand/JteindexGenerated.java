@@ -1,9 +1,10 @@
 package gg.jte.generated.ondemand;
 import gg.jte.Content;
 import org.example.hexlet.utils.NamedRoutes;
+import org.example.hexlet.utils.PostsNamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,8,8,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,19,19,19,19,23,23,23};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,3,3,5,5,9,9,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,22,22,22,22,26,26,26};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, Content content) {
 		jteOutput.writeContent("\r\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -32,7 +33,15 @@ public final class JteindexGenerated {
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent(">Список всех юзеров</a></li>\r\n        <li><a>Инфу про каждый курс</a></li>\r\n        <li><a>Инфу про каждого юзера</a></li>\r\n    </ul>\r\n");
+				jteOutput.writeContent(">Список всех юзеров</a></li>\r\n        <li><a");
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(PostsNamedRoutes.postsPath())) {
+					jteOutput.writeContent(" href=\"");
+					jteOutput.setContext("a", "href");
+					jteOutput.writeUserContent(PostsNamedRoutes.postsPath());
+					jteOutput.setContext("a", null);
+					jteOutput.writeContent("\"");
+				}
+				jteOutput.writeContent(">Список всех постов</a> </li>\r\n        <li><a>Инфу про каждый курс</a></li>\r\n        <li><a>Инфу про каждого юзера</a></li>\r\n        <li><a>Инфу про каждый пост</a></li>\r\n    </ul>\r\n");
 			}
 		}, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {

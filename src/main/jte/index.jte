@@ -1,5 +1,6 @@
 @import gg.jte.Content
 @import org.example.hexlet.utils.NamedRoutes
+@import org.example.hexlet.utils.PostsNamedRoutes
 @param Content content
 
 @template.layout.page(
@@ -11,8 +12,10 @@ content  = @`
         <li><a href="${NamedRoutes.mainPath()}">Главную страницу</a></li>
         <li><a href="${NamedRoutes.coursesPath()}">Список всех курсов</a></li>
         <li><a href="${NamedRoutes.usersPath()}">Список всех юзеров</a></li>
+        <li><a href="${PostsNamedRoutes.postsPath()}">Список всех постов</a> </li>
         <li><a>Инфу про каждый курс</a></li>
         <li><a>Инфу про каждого юзера</a></li>
+        <li><a>Инфу про каждый пост</a></li>
     </ul>
 `
 ,

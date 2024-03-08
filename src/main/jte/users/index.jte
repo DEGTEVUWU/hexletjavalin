@@ -20,6 +20,9 @@ content  = @`
     @if(page.getUserList().isEmpty())
         <p>Пока не добавлено ни одного пользователя</p>
     @else
+
+
+
         @for(var user : page.getUserList())
             <div>
                 <h2><a href="${NamedRoutes.userPath(user.getId())}">${user.getName()} ${user.getLastName()}</a></h2>
@@ -27,8 +30,10 @@ content  = @`
             </div>
         @endfor
     @endif
-    </body>
 
+
+
+    </body>
 `
 ,
 footer = @`
