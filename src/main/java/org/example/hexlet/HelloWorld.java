@@ -85,16 +85,18 @@ public class HelloWorld {
         app.post(PostsNamedRoutes.postPath("{id}"), PostsController::update);
 
 
-        // Отображение формы логина
-        app.get("/sessions/build", SessionsController::build);
-        // Процесс логина
-        app.post("/sessions", SessionsController::create);
-        // Процесс выхода из аккаунта
-        app.delete("/sessions", SessionsController::destroy);
+        //work with session
+
+        app.get(SessionNamedRoutes.buildSessionPath(), SessionsController::build);
+        app.post(SessionNamedRoutes.loginPath(), SessionsController::create);
+        app.post(SessionNamedRoutes.logoutPath(), SessionsController::destroy);
+
 
         app.get(RootNamedRoutes.mainPath(), ctx -> {
             Boolean visited = Boolean.valueOf(ctx.cookie("visited"));
-            var page = new MainPage(ctx.sessionAttribute("currentUser"), visited);
+            var user = ctx.sessionAttribute("user");
+
+            var page = new MainPage(user, ctx.sessionAttribute("currentUser"), visited);
 
             ctx.render("index.jte", Collections.singletonMap("page", page));
             ctx.cookie("visited", String.valueOf(true));

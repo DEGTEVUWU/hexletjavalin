@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.hexlet.dto.BasePage;
 import org.example.hexlet.model.Post;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostsPage {
+public class PostsPage extends BasePage {
     private List<Post> postList;
     private Integer pageNumber;
     private Integer previousPage;

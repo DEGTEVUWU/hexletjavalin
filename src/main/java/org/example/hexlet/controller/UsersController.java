@@ -9,6 +9,7 @@ import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.dto.users.EditUserPage;
 import org.example.hexlet.model.Post;
 import org.example.hexlet.repository.PostRepository;
+import org.example.hexlet.utils.Security;
 import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
@@ -89,6 +90,10 @@ public class UsersController {
         }
 
         UsersPage page = new UsersPage(sliceOfUsers, pageNumber, previousPage, nextPage, term);
+
+        //вывод флеш-сообщения о создании пользователя
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+
         ctx.render("users/index.jte", Collections.singletonMap("page", page));
     }
 
@@ -123,11 +128,18 @@ public class UsersController {
                     .check(value -> value.equals(passwordConfirmation), "Password mismatch!")
                     .check(value -> value.length() > 4, "Password is too short!")
                     .get();
-            User user = new User(name, lastname, email, password);
+            String encryptedPassword = Security.encrypt(password);
+            User user = new User(name, lastname, email, encryptedPassword);
             UserRepository.save(user);
+
+            ctx.sessionAttribute("flash", "Пользователь успешно зарегистрирован!");
+
             ctx.redirect(UserNamedRoutes.usersPath());
         } catch (ValidationException e) {
             var page = new BuildUserPage(name, lastname, email, e.getErrors());
+
+            ctx.sessionAttribute("errorFlash", "Не удалось зарегистрировать пользователя!");
+            page.setErrorFlash(ctx.consumeSessionAttribute("errorFlash"));
             ctx.status(422).render("users/build.jte", Collections.singletonMap("page", page));
         }
     }

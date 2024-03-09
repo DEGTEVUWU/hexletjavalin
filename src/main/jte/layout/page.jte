@@ -1,11 +1,14 @@
 @import gg.jte.Content
+@import org.example.hexlet.dto.BasePage
 @import org.example.hexlet.model.Course
 @import org.example.hexlet.utils.*
 @import org.example.hexlet.utils.UserNamedRoutes
 @import org.example.hexlet.utils.PostsNamedRoutes
 @import org.example.hexlet.utils.UserNamedRoutes
+
 @param Content content = null
 @param Content footer = null
+@param BasePage page = null
 
 <html lang="en">
 <head>
@@ -46,15 +49,23 @@
             <li class="nav-item">
                 <a class="nav-link" href="${PostsNamedRoutes.buildPostsPath()}">Написать пост</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${SessionNamedRoutes.buildSessionPath()}">Регистрация</a>
-            </li>
+
 
         </ul>
     </div>
 </nav>
 
 <main>
+    @if(page != null && page.getFlash() != null)
+        <div class="alert alert-success" role="alert">
+            ${page.getFlash()}
+        </div>
+    @endif
+        @if (page != null && page.getErrorFlash() != null)
+        <div class="alert alert-danger" role="alert">
+            ${page.getErrorFlash()}
+        </div>
+    @endif
 
     ${content}
 

@@ -6,12 +6,45 @@ import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,6,6,6,9,9,13,13,17,17,19,19,20,20,21,21,21,23,23,26,26,26,26,26,26,26,26,27,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28,29,29,29,29,29,29,29,29,34,34,34,34,34,34,34,34,37,37,37,37,41,41,41};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,6,6,6,9,9,13,13,18,18,19,19,19,20,20,20,20,20,20,20,20,23,23,25,25,25,25,25,25,25,25,28,28,28,28,28,28,28,28,31,31,34,34,36,36,37,37,38,38,38,40,40,43,43,43,43,43,43,43,43,44,44,44,44,44,44,44,44,45,45,45,45,45,45,45,45,46,46,46,46,46,46,46,46,51,51,51,51,51,51,51,51,54,54,54,54,58,58,58};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, MainPage page, Content content) {
 		jteOutput.writeContent("\r\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
-				jteOutput.writeContent("\r\n    <h1>Заголовок моего локал-сайта!</h1>\r\n    <h2>Подзаголовок! Если ты читаешь - пожалуйста, пользуйся</h2>\r\n\r\n        ");
+				jteOutput.writeContent("\r\n    <h1>Заголовок моего локал-сайта!</h1>\r\n    <h2>Подзаголовок! Если ты читаешь - пожалуйста, пользуйся</h2>\r\n    <br>\r\n\r\n    ");
+				if (page.getName() != null) {
+					jteOutput.writeContent("\r\n        <h3 class=\"mb-3\"> Добро пожаловать, ");
+					jteOutput.setContext("h3", null);
+					jteOutput.writeUserContent(page.getName().toString());
+					jteOutput.writeContent("</h3>\r\n        <form");
+					if (gg.jte.runtime.TemplateUtils.isAttributeRendered(SessionNamedRoutes.logoutPath())) {
+						jteOutput.writeContent(" action=\"");
+						jteOutput.setContext("form", "action");
+						jteOutput.writeUserContent(SessionNamedRoutes.logoutPath());
+						jteOutput.setContext("form", null);
+						jteOutput.writeContent("\"");
+					}
+					jteOutput.writeContent(" method=\"post\">\r\n            <input type=\"submit\" value=\"Выйти\">\r\n        </form>\r\n    ");
+				} else {
+					jteOutput.writeContent("\r\n        <h3 class=\"mb-3\"> Добро пожаловать, гость</h3>\r\n        <form");
+					if (gg.jte.runtime.TemplateUtils.isAttributeRendered(SessionNamedRoutes.buildSessionPath())) {
+						jteOutput.writeContent(" action=\"");
+						jteOutput.setContext("form", "action");
+						jteOutput.writeUserContent(SessionNamedRoutes.buildSessionPath());
+						jteOutput.setContext("form", null);
+						jteOutput.writeContent("\"");
+					}
+					jteOutput.writeContent(" method=\"get\">\r\n            <input type=\"submit\" value=\"Войти\">\r\n        </form>\r\n        <form");
+					if (gg.jte.runtime.TemplateUtils.isAttributeRendered(UserNamedRoutes.buildUserPath())) {
+						jteOutput.writeContent(" action=\"");
+						jteOutput.setContext("form", "action");
+						jteOutput.writeUserContent(UserNamedRoutes.buildUserPath());
+						jteOutput.setContext("form", null);
+						jteOutput.writeContent("\"");
+					}
+					jteOutput.writeContent(" method=\"get\">\r\n            <input type=\"submit\" value=\"Зарегистрироваться\">\r\n        </form>\r\n    ");
+				}
+				jteOutput.writeContent("\r\n<br>\r\n\r\n        ");
 				if (!page.isVisited()) {
 					jteOutput.writeContent("\r\n            <h2>Это сообщение показывается лишь единожды! Если хочешь снова - сотри куки!</h2>\r\n            ");
 				}
@@ -62,13 +95,13 @@ public final class JteindexGenerated {
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent(">Регистрация</a> </li>\r\n\r\n    </ul>\r\n");
+				jteOutput.writeContent(">Войти, как юзер</a> </li>\r\n\r\n    </ul>\r\n");
 			}
 		}, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
 				jteOutput.writeContent("\r\n    <div class=\"footer\">\r\n        <a href=\"https://github.com/DEGTEVUWU\">Дёгтев Иван - профиль на GitHub</a>\r\n    </div>\r\n");
 			}
-		});
+		}, null);
 	}
 	public static void renderMap(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.Map<String, Object> params) {
 		MainPage page = (MainPage)params.get("page");

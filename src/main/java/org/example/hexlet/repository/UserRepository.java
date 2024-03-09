@@ -29,6 +29,12 @@ public class UserRepository {
                 .findAny();
         return user;
     }
+    public static User findByName(String name) {
+        return entities.stream()
+                .filter(entity -> entity.getName().equals(name))
+                .findAny()
+                .orElse(null);
+    }
 
     public static List<User> getEntities() {
         return entities;

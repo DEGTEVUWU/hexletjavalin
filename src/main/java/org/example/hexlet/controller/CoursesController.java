@@ -92,6 +92,11 @@ public class CoursesController {
         }
 
         CoursesPage page = new CoursesPage(sliceOfUsers, pageNumber, previousPage, nextPage, term);
+
+        //вывод флеш сообщения о создании курса
+        String flash = ctx.consumeSessionAttribute("flash");
+        page.setFlash(flash);
+
         ctx.render("courses/index.jte", Collections.singletonMap("page", page));
     }
 
@@ -126,6 +131,9 @@ public class CoursesController {
 
             Course course = new Course(name, description);
             CourseRepository.save(course);
+
+            ctx.sessionAttribute("flash", "Курс успешно создан!");
+
             ctx.redirect(CourseNamedRoutes.coursesPath());
         } catch (ValidationException e) {
             var page = new BuildCoursePage(name, description, e.getErrors());

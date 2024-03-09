@@ -22,6 +22,7 @@ import org.example.hexlet.utils.PostsNamedRoutes;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.leftPad;
 import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class PostsController {
@@ -79,6 +80,7 @@ public class PostsController {
                         .collect(Collectors.toList());
             }
             PostsPage page = new PostsPage(finalPostsList, null, null, null, term);
+
             ctx.render("posts/search.jte", Collections.singletonMap("page", page));
             return;
         }
@@ -99,6 +101,11 @@ public class PostsController {
             sliceOfPosts = posts.subList(begin, end);
         }
         var page = new PostsPage(sliceOfPosts, pageNumber, previousPage, nextPage, term);
+
+        //вывод флеш сообщения о создании поста
+        String flash = ctx.consumeSessionAttribute("flash");
+        page.setFlash(flash);
+
         ctx.render("posts/index.jte", Collections.singletonMap("page", page));
     }
     public static void build(Context ctx) {
@@ -122,6 +129,9 @@ public class PostsController {
 
             Post post = new Post(name, content);
             PostRepository.save(post);
+
+            ctx.sessionAttribute("flash", "Пост успешно создан!");
+
             ctx.redirect(PostsNamedRoutes.postsPath());
         } catch (ValidationException e) {
             var page = new BuildPostPage(name, content, e.getErrors());

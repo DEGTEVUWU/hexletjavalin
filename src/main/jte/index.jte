@@ -11,6 +11,23 @@
 content  = @`
     <h1>Заголовок моего локал-сайта!</h1>
     <h2>Подзаголовок! Если ты читаешь - пожалуйста, пользуйся</h2>
+    <br>
+
+    @if (page.getName() != null)
+        <h3 class="mb-3"> Добро пожаловать, ${page.getName().toString()}</h3>
+        <form action="${SessionNamedRoutes.logoutPath()}" method="post">
+            <input type="submit" value="Выйти">
+        </form>
+    @else
+        <h3 class="mb-3"> Добро пожаловать, гость</h3>
+        <form action="${SessionNamedRoutes.buildSessionPath()}" method="get">
+            <input type="submit" value="Войти">
+        </form>
+        <form action="${UserNamedRoutes.buildUserPath()}" method="get">
+            <input type="submit" value="Зарегистрироваться">
+        </form>
+    @endif
+<br>
 
         @if(!page.isVisited())
             <h2>Это сообщение показывается лишь единожды! Если хочешь снова - сотри куки!</h2>
@@ -29,7 +46,7 @@ content  = @`
         <li><a>Инфу про каждого юзера</a></li>
         <li><a>Инфу про каждый пост</a></li>
 
-        <li><a href="${SessionNamedRoutes.buildSessionPath()}">Регистрация</a> </li>
+        <li><a href="${SessionNamedRoutes.buildSessionPath()}">Войти, как юзер</a> </li>
 
     </ul>
 `

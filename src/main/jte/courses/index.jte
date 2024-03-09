@@ -7,10 +7,12 @@
 
 
 @template.layout.page(
+page = page,
 content  = @`
 <div class="mx-auto p-4 py-md-5">
     <main>
     <h1>${"Это лист со всеми доступными курсами!"}</h1>
+
 
     <h4>${"Вы можете найти курс по имени"}</h4>
     <form action="${CourseNamedRoutes.coursesPath()}" method="get">
@@ -28,7 +30,6 @@ content  = @`
     @if(page.getCourses().isEmpty())
         <p>Пока не добавлено ни одного курса</p>
         @else
-
 
         <table class="table table-striped">
             @for(var post : page.getCourses())
