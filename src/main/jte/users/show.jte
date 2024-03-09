@@ -1,11 +1,26 @@
 @import org.example.hexlet.dto.users.UserPage
+@import org.example.hexlet.utils.UserNamedRoutes
 @param UserPage page
 
 @template.layout.page(
 content  = @`
-    <div>
-        ${page.getUser().getId()} ${page.getUser().getName()} ${page.getUser().getLastName()} ${page.getUser().getEmail()}
-    </div>
+    <main>
+        <div class="mx-auto p-4 py-md-2">
+            <h4>${page.getUser().getName()}</h4>
+        </div>
+
+        <div class="mx-auto p-4 py-md-2">
+            <h4>${page.getUser().getLastName()}</h4>
+        </div>
+        <div class="mx-auto p-4 py-md-2">
+            ${page.getUser().getEmail()}
+        </div>
+        <!-- BEGIN -->
+        <div class="mx-auto p-4 py-md-2">
+            <a href="${UserNamedRoutes.editUserPath(page.getUser().getId())}">Редактировать</a>
+        </div>
+        <!-- END -->
+    </main>
 `
 ,
 footer = @`

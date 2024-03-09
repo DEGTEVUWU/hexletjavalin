@@ -20,13 +20,13 @@ content  = @`
             <div class="mb-3">
                 <label class="form-label">
                 Название поста
-                <input type="text" name="name" value="${page.getName()}"/>
+                <input type="text" class="form-control" name="name" value="${page.getName()}"/>
             </label>
         </div>
             <div class="mb-3">
                 <label class="form-label">
                 Содержание поста
-                <textarea required name="content" rows="6" cols="30" value="${page.getBody()}"></textarea>
+                <textarea class="form-control" required name="content" rows="6" cols="30" value="${page.getBody()}"></textarea>
             </label>
         </div>
         <input type="submit" value="Зарегистрировать" />

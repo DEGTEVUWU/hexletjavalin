@@ -16,17 +16,18 @@ content  = @`
         </ul>
     @endif
 
+            <div class="mx-auto p-4 py-md-5">
     <form action="${CourseNamedRoutes.coursesPath()}" method="post">
-        <div>
-            <label>
+            <div class="mb-3">
+                <label class="form-label">
                 Название курса
-                <input type="text" name="name" value="${page.getName()}"/>
+                <input type="text" class="form-control" name="name" value="${page.getName()}"/>
             </label>
         </div>
-        <div>
-            <label>
+            <div class="mb-3">
+                <label class="form-label">
                 Описание курса
-                <textarea required name="description" rows="6" cols="30" value="${page.getDescription()}"></textarea>
+                <textarea class="form-control" required name="description" rows="6" cols="30" value="${page.getDescription()}"></textarea>
             </label>
         </div>
         <input type="submit" value="Зарегистрировать" />

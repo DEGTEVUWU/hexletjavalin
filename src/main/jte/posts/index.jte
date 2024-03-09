@@ -33,7 +33,7 @@ content  = @`
                         <a href="${PostsNamedRoutes.postPath(post.getId())}">${post.getName()}</a>
                     </td>
                     <td>
-                        ${post.getBody()}
+                        <a>${post.getBody()}</a>
                     </td>
                 </tr>
             @endfor

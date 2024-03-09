@@ -10,6 +10,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.example.hexlet.controller.CoursesController;
 import org.example.hexlet.controller.PostsController;
 import org.example.hexlet.controller.UsersController;
+import org.example.hexlet.controller.SessionsController;
 import org.example.hexlet.data.DataCourses;
 import org.example.hexlet.data.DataUsers;
 import org.example.hexlet.dto.MainPage;
@@ -60,7 +61,8 @@ public class HelloWorld {
         app.get(UserNamedRoutes.buildUserPath(), UsersController::build);
         app.post(UserNamedRoutes.usersPath(), UsersController::create);
         app.get(UserNamedRoutes.userPath("{id}"), UsersController::show);
-
+        app.get(UserNamedRoutes.editUserPath("{id}"), UsersController::edit);
+        app.post(UserNamedRoutes.userPath("{id}"), UsersController::update);
 
 
 
@@ -83,9 +85,16 @@ public class HelloWorld {
         app.post(PostsNamedRoutes.postPath("{id}"), PostsController::update);
 
 
+        // Отображение формы логина
+        app.get("/sessions/build", SessionsController::build);
+        // Процесс логина
+        app.post("/sessions", SessionsController::create);
+        // Процесс выхода из аккаунта
+        app.delete("/sessions", SessionsController::destroy);
+
         app.get(RootNamedRoutes.mainPath(), ctx -> {
             Boolean visited = Boolean.valueOf(ctx.cookie("visited"));
-            MainPage page = new MainPage(visited);
+            var page = new MainPage(ctx.sessionAttribute("currentUser"), visited);
 
             ctx.render("index.jte", Collections.singletonMap("page", page));
             ctx.cookie("visited", String.valueOf(true));

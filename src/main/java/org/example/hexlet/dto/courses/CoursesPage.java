@@ -14,6 +14,9 @@ import java.util.List;
 @Setter
 public class CoursesPage {
     private List<Course> courses;
+    private Integer pageNumber;
+    private Integer previousPage;
+    private Integer nextPage;
     private String term;
 
     public CoursesPage(List<Course> courses) {

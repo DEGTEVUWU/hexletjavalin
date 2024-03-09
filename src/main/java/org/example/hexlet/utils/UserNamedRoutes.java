@@ -13,7 +13,6 @@ public class UserNamedRoutes {
     }
 
 
-
     // преобразование айди юзера в строку
     public static String userPath(Long id) {
         return userPath(String.valueOf(id));
@@ -22,6 +21,13 @@ public class UserNamedRoutes {
     //маршрут для конкретного юзера
     public static String userPath(String id) {
         return "/users/" + id;
+    }
+
+    public static String editUserPath(Long id) {
+        return editUserPath(String.valueOf(id));
+    }
+    public static String editUserPath(String id) {
+        return "/users" + id + "/edit";
     }
 
 }

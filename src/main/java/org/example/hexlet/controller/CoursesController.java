@@ -29,9 +29,10 @@ import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 public class CoursesController {
     public static void index(Context ctx) {
         List<Course> courses = CourseRepository.getEntities();
+        List<Course> finalCoursesList = new ArrayList<>(courses);
         var term = ctx.queryParam("term");
-        List<Course> finalCoursesList = new ArrayList<>();
 
+        //код для поиска курса по началу имени и описанию
         if (term != null) {
             Set<String> namesCourses = new TreeSet<>();
             namesCourses = courses.stream()
@@ -68,10 +69,29 @@ public class CoursesController {
                         .filter(c -> startsWithIgnoreCase(c.getDescription(), term))
                         .collect(Collectors.toList());
             }
-        } else {
-            finalCoursesList = courses;
+            CoursesPage page = new CoursesPage(finalCoursesList, null, null, null, term);
+            ctx.render("courses/search.jte", Collections.singletonMap("page", page));
+            return;
         }
-        CoursesPage page = new CoursesPage(finalCoursesList, term);
+
+        //создание страницы по 5 элементов из списка юзеров на каждой
+        int pageNumber = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+        int quantity = 5;
+        int begin = (pageNumber - 1) * quantity;
+        int end = begin + quantity;
+        int previousPage = pageNumber == 1 ? 1 : pageNumber - 1;
+        int nextPage = pageNumber + 1;
+        List<Course> sliceOfUsers;
+
+        if(begin >= courses.size()) {
+            sliceOfUsers = new ArrayList<>();
+        } else if (end >= courses.size()) {
+            sliceOfUsers = courses.subList(begin, courses.size());
+        } else {
+            sliceOfUsers = courses.subList(begin, end);
+        }
+
+        CoursesPage page = new CoursesPage(sliceOfUsers, pageNumber, previousPage, nextPage, term);
         ctx.render("courses/index.jte", Collections.singletonMap("page", page));
     }
 

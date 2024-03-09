@@ -9,17 +9,20 @@ import org.example.hexlet.dto.posts.BuildPostPage;
 import org.example.hexlet.dto.posts.EditPostPage;
 import org.example.hexlet.dto.posts.PostPage;
 import org.example.hexlet.dto.posts.PostsPage;
+import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.Course;
 import org.example.hexlet.model.Post;
+import org.example.hexlet.model.User;
 import org.example.hexlet.repository.CourseRepository;
 import org.example.hexlet.repository.PostRepository;
+import org.example.hexlet.repository.UserRepository;
 import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class PostsController {
 
@@ -34,11 +37,56 @@ public class PostsController {
     }
 
     public static void index(Context ctx) {
+        List<Post> posts = PostRepository.getEntities();
+        List<Post> finalPostsList = new ArrayList<>(posts);
+        var term = ctx.queryParam("term");
+
+        //код для поиска поста по началу названия и содержания
+        if (term != null) {
+            Set<String> namesPosts = new TreeSet<>();
+            namesPosts = posts.stream()
+                    .map(Post::getName)
+                    .collect(Collectors.toSet());
+
+            Set<String> bodyPosts = new TreeSet<>();
+            bodyPosts = posts.stream()
+                    .map(Post::getBody)
+                    .collect(Collectors.toSet());
+
+            boolean nameExist = false;
+            for (var name : namesPosts) {
+                if (startsWithIgnoreCase(name, term)) {
+                    nameExist = true;
+                    break;
+                }
+            }
+
+            boolean bodyExist = false;
+            for (var name : bodyPosts) {
+                if (startsWithIgnoreCase(name, term)) {
+                    bodyExist = true;
+                    break;
+                }
+            }
+
+            if (nameExist) {
+                finalPostsList = posts.stream()
+                        .filter(p  -> startsWithIgnoreCase(p.getName(), term))
+                        .collect(Collectors.toList());
+            } else if (bodyExist) {
+                finalPostsList = posts.stream()
+                        .filter(p -> startsWithIgnoreCase(p.getBody(), term))
+                        .collect(Collectors.toList());
+            }
+            PostsPage page = new PostsPage(finalPostsList, null, null, null, term);
+            ctx.render("posts/search.jte", Collections.singletonMap("page", page));
+            return;
+        }
+
         int pageNumber = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
         int quantity = 5;
         int begin = (pageNumber - 1) * quantity;
         int end = begin + quantity;
-        var posts = PostRepository.getEntities();
         int previousPage = pageNumber == 1 ? 1 : pageNumber - 1;
         int nextPage = pageNumber + 1;
         List<Post> sliceOfPosts;
@@ -50,7 +98,7 @@ public class PostsController {
         } else {
             sliceOfPosts = posts.subList(begin, end);
         }
-        var page = new PostsPage(sliceOfPosts, pageNumber, previousPage, nextPage);
+        var page = new PostsPage(sliceOfPosts, pageNumber, previousPage, nextPage, term);
         ctx.render("posts/index.jte", Collections.singletonMap("page", page));
     }
     public static void build(Context ctx) {

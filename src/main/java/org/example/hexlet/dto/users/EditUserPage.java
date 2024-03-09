@@ -1,6 +1,7 @@
 package org.example.hexlet.dto.users;
 
 import io.javalin.validation.ValidationError;
+import jdk.jfr.SettingDefinition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,11 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildUserPage {
+public class EditUserPage {
+    private long id;
     private String name;
     private String lastname;
     private String email;
+    private String password;
     private Map<String, List<ValidationError<Object>>> errors;
 }

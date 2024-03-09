@@ -19,7 +19,8 @@ content  = @`
                 <p>Пока не добавлено ни одного пользователя</p>
             @else
 
-                @for(var user : page.getUserList())
+            <table class="table table-striped">
+            @for(var user : page.getUserList())
                     <tr>
                         <td>
                             ${user.getId()}
@@ -29,6 +30,7 @@ content  = @`
                         </td>
                     </tr>
                 @endfor
+            </table>
             @endif
 
         </main>
@@ -37,7 +39,7 @@ content  = @`
 ,
 footer = @`
     <div class="footer">
-        <a>Спасибо, что посетили мой сайт! И в особенности эту страницу со всеми юзерами! Жду снова!</a>
+        <a>Спасибо, что посетили мой сайт! И в особенности эту страницу с выборкой юзеров по твоему поиску! Жду снова!</a>
         <br>
         <a href="https://github.com/DEGTEVUWU">Дёгтев Иван - профиль на GitHub</a>
     </div>

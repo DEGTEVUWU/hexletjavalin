@@ -3,7 +3,10 @@ package org.example.hexlet.controller;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.example.hexlet.dto.posts.EditPostPage;
 import org.example.hexlet.dto.users.BuildUserPage;
+import org.example.hexlet.dto.users.EditUserPage;
 import org.example.hexlet.model.Post;
 import org.example.hexlet.repository.PostRepository;
 import org.example.hexlet.utils.UserNamedRoutes;
@@ -63,8 +66,9 @@ public class UsersController {
                         .filter(u -> startsWithIgnoreCase(u.getEmail(), term))
                         .collect(Collectors.toList());
             }
-        } else {
-            finalUsersList = users;
+            UsersPage page = new UsersPage(finalUsersList, null, null, null, term);
+            ctx.render("users/search.jte", Collections.singletonMap("page", page));
+            return;
         }
 
         //создание страни по 5 элементов из списка юзеров на каждой
@@ -79,9 +83,9 @@ public class UsersController {
         if(begin >= users.size()) {
             sliceOfUsers = new ArrayList<>();
         } else if (end >= users.size()) {
-            sliceOfUsers = finalUsersList.subList(begin, users.size());
+            sliceOfUsers = users.subList(begin, users.size());
         } else {
-            sliceOfUsers = finalUsersList.subList(begin, end);
+            sliceOfUsers = users.subList(begin, end);
         }
 
         UsersPage page = new UsersPage(sliceOfUsers, pageNumber, previousPage, nextPage, term);
@@ -104,6 +108,7 @@ public class UsersController {
 
     public static void create(Context ctx) {
         var name = ctx.formParam("name");
+        var lastname = ctx.formParam("lastname");
         var email = ctx.formParam("email").trim().toLowerCase();
         var password = ctx.formParam("password");
         var passwordConfirmation = ctx.formParam("passwordConfirmation");
@@ -118,11 +123,11 @@ public class UsersController {
                     .check(value -> value.equals(passwordConfirmation), "Password mismatch!")
                     .check(value -> value.length() > 4, "Password is too short!")
                     .get();
-            User user = new User(name, email, password);
+            User user = new User(name, lastname, email, password);
             UserRepository.save(user);
             ctx.redirect(UserNamedRoutes.usersPath());
         } catch (ValidationException e) {
-            var page = new BuildUserPage(name, email, e.getErrors());
+            var page = new BuildUserPage(name, lastname, email, e.getErrors());
             ctx.status(422).render("users/build.jte", Collections.singletonMap("page", page));
         }
     }
@@ -131,25 +136,43 @@ public class UsersController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var user = UserRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var page = new UserPage(user);
+        var page = new EditUserPage(id, user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), null);
         ctx.render("users/edit.jte", Collections.singletonMap("page", page));
     }
 
 
     public static void update(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
-
         var name = ctx.formParam("name");
+        var lastname = ctx.formParam("lastname");
         var email = ctx.formParam("email");
         var password = ctx.formParam("password");
 
-        var user = UserRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        UserRepository.save(user);
-        ctx.redirect(UserNamedRoutes.usersPath());
+        try {
+            ctx.formParamAsClass("name", String.class)
+                    .check(value -> UserRepository.getEntities().stream()
+                                    .noneMatch(user -> user.getName().equals(value)),
+                            "Пользователь с таким именем уже существует!")
+                    .get();
+            ctx.formParamAsClass("password", String.class)
+                    .check(value -> value.length() > 4, "Password is too short!")
+                    .get();
+
+            var user = UserRepository.find(id)
+                    .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
+
+            user.setId(id);
+            user.setName(name);
+            user.setLastName(lastname);
+            user.setEmail(email);
+            user.setPassword(password);
+//            UserRepository.save(user);
+            ctx.redirect(UserNamedRoutes.usersPath());
+        } catch (ValidationException e) {
+            var page = new EditUserPage(id, name, lastname, email, password, e.getErrors());
+            ctx.render("users/edit.jte", Collections.singletonMap("page", page)).status(422);
+        }
+
     }
 
     public static void destroy(Context ctx) {

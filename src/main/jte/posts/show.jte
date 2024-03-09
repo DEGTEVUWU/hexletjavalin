@@ -7,15 +7,15 @@
 @template.layout.page(
 content = @`
     <main>
-        <div class="mx-auto p-4 py-md-5">
-            <h1>${page.getPost().getName()}</h1>
+        <div class="mx-auto p-4 py-md-2">
+            <h3>${page.getPost().getName()}</h3>
         </div>
 
-        <div class="mx-auto p-4 py-md-5">
+        <div class="mx-auto p-4 py-md-2">
             ${page.getPost().getBody()}
         </div>
         <!-- BEGIN -->
-        <div class="mx-auto p-4 py-md-5">
+        <div class="mx-auto p-4 py-md-2">
             <a href="${PostsNamedRoutes.editPostPath(page.getPost().getId())}">Редактировать</a>
         </div>
         <!-- END -->

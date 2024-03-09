@@ -46,6 +46,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="${PostsNamedRoutes.buildPostsPath()}">Написать пост</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${SessionNamedRoutes.buildSessionPath()}">Регистрация</a>
+            </li>
+
         </ul>
     </div>
 </nav>

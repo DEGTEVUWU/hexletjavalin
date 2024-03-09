@@ -15,6 +15,10 @@ content  = @`
         @if(!page.isVisited())
             <h2>Это сообщение показывается лишь единожды! Если хочешь снова - сотри куки!</h2>
             @endif
+    @if(page.getCurrentUser() != null)
+        Добро пожаловать, ${page.getCurrentUser()}.
+        Чтобы разлогиниться, удалите куку JSESSIONID из браузера
+    @endif
     <h4>Тут ты увидишь:</h4>
     <ul>
         <li><a href="${RootNamedRoutes.mainPath()}">Главную страницу</a></li>
@@ -24,6 +28,9 @@ content  = @`
         <li><a>Инфу про каждый курс</a></li>
         <li><a>Инфу про каждого юзера</a></li>
         <li><a>Инфу про каждый пост</a></li>
+
+        <li><a href="${SessionNamedRoutes.buildSessionPath()}">Регистрация</a> </li>
+
     </ul>
 `
 ,

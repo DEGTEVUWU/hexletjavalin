@@ -26,12 +26,18 @@ content  = @`
         <p>Пока не добавлено ни одного пользователя</p>
     @else
 
+        <table class="table table-striped">
         @for(var user : page.getUserList())
-            <div>
-                <h2><a href="${UserNamedRoutes.userPath(user.getId())}">${user.getName()} ${user.getLastName()}</a></h2>
-                <p>${user.getEmail()}</p>
-            </div>
+            <tr>
+                <td>
+                    ${user.getId()}
+                </td>
+                <td>
+                    <a href="${UserNamedRoutes.userPath(user.getId())}">${user.getName()} ${user.getLastName()}</a>
+                </td>
+            </tr>
         @endfor
+        </table>
     @endif
 
         <nav aria-label="Page navigation example">
