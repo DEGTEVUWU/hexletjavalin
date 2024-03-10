@@ -27,7 +27,7 @@ public class UserNamedRoutes {
         return editUserPath(String.valueOf(id));
     }
     public static String editUserPath(String id) {
-        return "/users" + id + "/edit";
+        return "/users/" + id + "/edit";
     }
 
 }

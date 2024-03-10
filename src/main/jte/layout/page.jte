@@ -41,6 +41,9 @@
                 <a class="nav-link" href="${PostsNamedRoutes.postsPath()}">Все посты</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="${CarsNamedRoutes.carsPath()}">Все машины</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="${CourseNamedRoutes.buildCoursesPath()}">Написать курс</a>
             </li>
             <li class="nav-item">
@@ -48,6 +51,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${PostsNamedRoutes.buildPostsPath()}">Написать пост</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${CarsNamedRoutes.buildCarsPath()}">Добавить машину</a>
             </li>
 
 

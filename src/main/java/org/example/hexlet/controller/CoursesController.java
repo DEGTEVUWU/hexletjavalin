@@ -21,13 +21,14 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 import org.example.hexlet.utils.PostsNamedRoutes;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class CoursesController {
-    public static void index(Context ctx) {
+    public static void index(Context ctx) throws SQLException {
         List<Course> courses = CourseRepository.getEntities();
         List<Course> finalCoursesList = new ArrayList<>(courses);
         var term = ctx.queryParam("term");
@@ -100,7 +101,7 @@ public class CoursesController {
         ctx.render("courses/index.jte", Collections.singletonMap("page", page));
     }
 
-    public static void show(Context ctx) {
+    public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         Course course = CourseRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
@@ -114,14 +115,20 @@ public class CoursesController {
         ctx.render("courses/build.jte", Collections.singletonMap("page", page));
     }
 
-    public static void create(Context ctx) {
+    public static void create(Context ctx) throws SQLException {
         var name = ctx.formParam("name");
         var description = ctx.formParam("description");
 
         try {
             ctx.formParamAsClass("name", String.class)
-                    .check(value -> CourseRepository.getEntities().stream()
-                                    .noneMatch(course -> course.getName().equals(value)),
+                    .check(value -> {
+                                try {
+                                    return CourseRepository.getEntities().stream()
+                                                    .noneMatch(course -> course.getName().equals(value));
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            },
                             "Курс с таким названием уже существует!")
                     .check(value -> value.length() > 2, "Название курса слишком короткое!")
                     .get();
@@ -141,7 +148,7 @@ public class CoursesController {
         }
     }
 
-    public static void edit(Context ctx) {
+    public static void edit(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var course = CourseRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Course not found"));
@@ -151,7 +158,7 @@ public class CoursesController {
     }
 
 
-    public static void update(Context ctx) {
+    public static void update(Context ctx) throws SQLException {
 
         var id = ctx.pathParamAsClass("id", Long.class).get();
 

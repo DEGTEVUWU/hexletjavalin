@@ -42,6 +42,7 @@ content  = @`
         <li><a href="${CourseNamedRoutes.coursesPath()}">Список всех курсов</a></li>
         <li><a href="${UserNamedRoutes.usersPath()}">Список всех юзеров</a></li>
         <li><a href="${PostsNamedRoutes.postsPath()}">Список всех постов</a> </li>
+        <li><a href="${CarsNamedRoutes.carsPath()}">Список всех машин</a> </li>
         <li><a>Инфу про каждый курс</a></li>
         <li><a>Инфу про каждого юзера</a></li>
         <li><a>Инфу про каждый пост</a></li>

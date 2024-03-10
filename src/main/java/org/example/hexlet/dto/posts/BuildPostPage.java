@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.hexlet.dto.BasePage;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildPostPage {
+public class BuildPostPage extends BasePage {
     private String name;
     private String body;
     private Map<String, List<ValidationError<Object>>> errors;

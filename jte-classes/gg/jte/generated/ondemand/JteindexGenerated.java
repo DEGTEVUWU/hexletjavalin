@@ -6,7 +6,7 @@ import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,6,6,6,9,9,13,13,18,18,19,19,19,20,20,20,20,20,20,20,20,23,23,25,25,25,25,25,25,25,25,28,28,28,28,28,28,28,28,31,31,34,34,36,36,37,37,38,38,38,40,40,43,43,43,43,43,43,43,43,44,44,44,44,44,44,44,44,45,45,45,45,45,45,45,45,46,46,46,46,46,46,46,46,51,51,51,51,51,51,51,51,54,54,54,54,58,58,58};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,6,6,6,9,9,13,13,18,18,19,19,19,20,20,20,20,20,20,20,20,23,23,25,25,25,25,25,25,25,25,28,28,28,28,28,28,28,28,31,31,34,34,36,36,37,37,38,38,38,40,40,43,43,43,43,43,43,43,43,44,44,44,44,44,44,44,44,45,45,45,45,45,45,45,45,46,46,46,46,46,46,46,46,47,47,47,47,47,47,47,47,52,52,52,52,52,52,52,52,55,55,55,55,59,59,59};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, MainPage page, Content content) {
 		jteOutput.writeContent("\r\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -87,7 +87,15 @@ public final class JteindexGenerated {
 					jteOutput.setContext("a", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent(">Список всех постов</a> </li>\r\n        <li><a>Инфу про каждый курс</a></li>\r\n        <li><a>Инфу про каждого юзера</a></li>\r\n        <li><a>Инфу про каждый пост</a></li>\r\n\r\n        <li><a");
+				jteOutput.writeContent(">Список всех постов</a> </li>\r\n        <li><a");
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(CarsNamedRoutes.carsPath())) {
+					jteOutput.writeContent(" href=\"");
+					jteOutput.setContext("a", "href");
+					jteOutput.writeUserContent(CarsNamedRoutes.carsPath());
+					jteOutput.setContext("a", null);
+					jteOutput.writeContent("\"");
+				}
+				jteOutput.writeContent(">Список всех машин</a> </li>\r\n        <li><a>Инфу про каждый курс</a></li>\r\n        <li><a>Инфу про каждого юзера</a></li>\r\n        <li><a>Инфу про каждый пост</a></li>\r\n\r\n        <li><a");
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(SessionNamedRoutes.buildSessionPath())) {
 					jteOutput.writeContent(" href=\"");
 					jteOutput.setContext("a", "href");

@@ -8,7 +8,7 @@ import org.example.hexlet.utils.PostsNamedRoutes;
 import org.example.hexlet.utils.UserNamedRoutes;
 public final class JtepageGenerated {
 	public static final String JTE_NAME = "layout/page.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,5,6,8,8,8,31,31,31,31,31,31,31,31,31,34,34,34,34,34,34,34,34,37,37,37,37,37,37,37,37,40,40,40,40,40,40,40,40,43,43,43,43,43,43,43,43,46,46,46,46,46,46,46,46,49,49,49,49,49,49,49,49,58,58,60,60,60,62,62,63,63,65,65,65,67,67,69,69,69,74,74,74,78};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,4,5,6,8,8,8,31,31,31,31,31,31,31,31,31,34,34,34,34,34,34,34,34,37,37,37,37,37,37,37,37,40,40,40,40,40,40,40,40,43,43,43,43,43,43,43,43,46,46,46,46,46,46,46,46,49,49,49,49,49,49,49,49,52,52,52,52,52,52,52,52,55,55,55,55,55,55,55,55,64,64,66,66,66,68,68,69,69,71,71,71,73,73,75,75,75,80,80,80,84};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, Content content, Content footer, BasePage page) {
 		jteOutput.writeContent("\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css\"\r\n          rel=\"stylesheet\"\r\n          integrity=\"sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We\"\r\n          crossorigin=\"anonymous\">\r\n    <title>Hello Hexlet!</title>\r\n</head>\r\n<body>\r\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\"\r\n        integrity=\"sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz\"\r\n        crossorigin=\"anonymous\"></script>\r\n\r\n<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n    <div class=\"collapse navbar-collapse\" id=\"navbarNavDropdown\">\r\n        <ul class=\"navbar-nav\">\r\n            <li class=\"nav-item active\">\r\n                <a class=\"nav-link\"");
 		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(RootNamedRoutes.mainPath())) {
@@ -43,6 +43,14 @@ public final class JtepageGenerated {
 			jteOutput.writeContent("\"");
 		}
 		jteOutput.writeContent(">Все посты</a>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\"");
+		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(CarsNamedRoutes.carsPath())) {
+			jteOutput.writeContent(" href=\"");
+			jteOutput.setContext("a", "href");
+			jteOutput.writeUserContent(CarsNamedRoutes.carsPath());
+			jteOutput.setContext("a", null);
+			jteOutput.writeContent("\"");
+		}
+		jteOutput.writeContent(">Все машины</a>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\"");
 		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(CourseNamedRoutes.buildCoursesPath())) {
 			jteOutput.writeContent(" href=\"");
 			jteOutput.setContext("a", "href");
@@ -66,7 +74,15 @@ public final class JtepageGenerated {
 			jteOutput.setContext("a", null);
 			jteOutput.writeContent("\"");
 		}
-		jteOutput.writeContent(">Написать пост</a>\r\n            </li>\r\n\r\n\r\n        </ul>\r\n    </div>\r\n</nav>\r\n\r\n<main>\r\n    ");
+		jteOutput.writeContent(">Написать пост</a>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\"");
+		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(CarsNamedRoutes.buildCarsPath())) {
+			jteOutput.writeContent(" href=\"");
+			jteOutput.setContext("a", "href");
+			jteOutput.writeUserContent(CarsNamedRoutes.buildCarsPath());
+			jteOutput.setContext("a", null);
+			jteOutput.writeContent("\"");
+		}
+		jteOutput.writeContent(">Добавить машину</a>\r\n            </li>\r\n\r\n\r\n        </ul>\r\n    </div>\r\n</nav>\r\n\r\n<main>\r\n    ");
 		if (page != null && page.getFlash() != null) {
 			jteOutput.writeContent("\r\n        <div class=\"alert alert-success\" role=\"alert\">\r\n            ");
 			jteOutput.setContext("div", null);

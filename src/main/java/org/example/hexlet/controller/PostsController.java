@@ -19,6 +19,7 @@ import org.example.hexlet.repository.UserRepository;
 import org.example.hexlet.utils.UserNamedRoutes;
 import org.example.hexlet.utils.PostsNamedRoutes;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 public class PostsController {
 
     // BEGIN
-    public static void show(Context ctx) {
+    public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found"));
@@ -37,7 +38,7 @@ public class PostsController {
         ctx.render("posts/show.jte", Collections.singletonMap("page", page));
     }
 
-    public static void index(Context ctx) {
+    public static void index(Context ctx) throws SQLException {
         List<Post> posts = PostRepository.getEntities();
         List<Post> finalPostsList = new ArrayList<>(posts);
         var term = ctx.queryParam("term");
@@ -112,14 +113,20 @@ public class PostsController {
         var page = new BuildPostPage();
         ctx.render("posts/build.jte", Collections.singletonMap("page", page));
     }
-    public static void create(Context ctx) {
+    public static void create(Context ctx) throws SQLException {
         var name = ctx.formParam("name");
         var content = ctx.formParam("content");
 
         try {
             ctx.formParamAsClass("name", String.class)
-                    .check(value -> PostRepository.getEntities().stream()
-                                    .noneMatch(post -> post.getName().equals(value)),
+                    .check(value -> {
+                                try {
+                                    return PostRepository.getEntities().stream()
+                                                    .noneMatch(post -> post.getName().equals(value));
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            },
                             "Пост с таким названием уже существует!")
                     .check(value -> value.length() > 2, "Название поста слишком короткое!")
                     .get();
@@ -139,7 +146,7 @@ public class PostsController {
         }
     }
 
-    public static void edit(Context ctx) {
+    public static void edit(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found"));
@@ -148,7 +155,7 @@ public class PostsController {
         ctx.render("posts/edit.jte", Collections.singletonMap("page", page));
     }
 
-    public static void update(Context ctx) {
+    public static void update(Context ctx) throws SQLException {
 
         var id = ctx.pathParamAsClass("id", Long.class).get();
 

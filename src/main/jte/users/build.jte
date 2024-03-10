@@ -27,7 +27,7 @@ content  = @`
             <div class="mb-3">
                 <label class="form-label">
                 Фамилия пользователя
-                <input type="text" class="form-control" name="lastname" value="${page.getLastname()}"/>
+                <input type="text" class="form-control" name="lastName" value="${page.getLastname()}"/>
             </label>
         </div>
             <div class="mb-3">

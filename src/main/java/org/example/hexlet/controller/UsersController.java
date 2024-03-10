@@ -1,5 +1,6 @@
 package org.example.hexlet.controller;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ import org.example.hexlet.utils.UserNamedRoutes;
 import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 
 public class UsersController {
-    public static void index(Context ctx) {
+    public static void index(Context ctx) throws SQLException {
         List<User> users = UserRepository.getEntities();
         List<User> finalUsersList = new ArrayList<>(users);
         var term = ctx.queryParam("term");
@@ -97,7 +98,7 @@ public class UsersController {
         ctx.render("users/index.jte", Collections.singletonMap("page", page));
     }
 
-    public static void show(Context ctx) {
+    public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         User user = UserRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
@@ -111,17 +112,23 @@ public class UsersController {
         ctx.render("users/build.jte", Collections.singletonMap("page", page));
     }
 
-    public static void create(Context ctx) {
+    public static void create(Context ctx) throws SQLException {
         var name = ctx.formParam("name");
-        var lastname = ctx.formParam("lastname");
+        var lastName = ctx.formParam("lastName");
         var email = ctx.formParam("email").trim().toLowerCase();
         var password = ctx.formParam("password");
         var passwordConfirmation = ctx.formParam("passwordConfirmation");
 
         try {
             ctx.formParamAsClass("name", String.class)
-                    .check(value -> UserRepository.getEntities().stream()
-                                    .noneMatch(user -> user.getName().equals(value)),
+                    .check(value -> {
+                                try {
+                                    return UserRepository.getEntities().stream()
+                                                    .noneMatch(user -> user.getName().equals(value));
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            },
                             "Пользователь с таким именем уже существует!")
                     .get();
             ctx.formParamAsClass("password", String.class)
@@ -129,14 +136,14 @@ public class UsersController {
                     .check(value -> value.length() > 4, "Password is too short!")
                     .get();
             String encryptedPassword = Security.encrypt(password);
-            User user = new User(name, lastname, email, encryptedPassword);
+            User user = new User(name, lastName, email, encryptedPassword);
             UserRepository.save(user);
 
             ctx.sessionAttribute("flash", "Пользователь успешно зарегистрирован!");
 
             ctx.redirect(UserNamedRoutes.usersPath());
         } catch (ValidationException e) {
-            var page = new BuildUserPage(name, lastname, email, e.getErrors());
+            var page = new BuildUserPage(name, lastName, email, password, e.getErrors());
 
             ctx.sessionAttribute("errorFlash", "Не удалось зарегистрировать пользователя!");
             page.setErrorFlash(ctx.consumeSessionAttribute("errorFlash"));
@@ -144,7 +151,7 @@ public class UsersController {
         }
     }
 
-    public static void edit(Context ctx) {
+    public static void edit(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var user = UserRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
@@ -153,19 +160,14 @@ public class UsersController {
     }
 
 
-    public static void update(Context ctx) {
+    public static void update(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var name = ctx.formParam("name");
-        var lastname = ctx.formParam("lastname");
+        var lastName = ctx.formParam("lastName");
         var email = ctx.formParam("email");
         var password = ctx.formParam("password");
 
         try {
-            ctx.formParamAsClass("name", String.class)
-                    .check(value -> UserRepository.getEntities().stream()
-                                    .noneMatch(user -> user.getName().equals(value)),
-                            "Пользователь с таким именем уже существует!")
-                    .get();
             ctx.formParamAsClass("password", String.class)
                     .check(value -> value.length() > 4, "Password is too short!")
                     .get();
@@ -175,13 +177,12 @@ public class UsersController {
 
             user.setId(id);
             user.setName(name);
-            user.setLastName(lastname);
+            user.setLastName(lastName);
             user.setEmail(email);
             user.setPassword(password);
-//            UserRepository.save(user);
             ctx.redirect(UserNamedRoutes.usersPath());
         } catch (ValidationException e) {
-            var page = new EditUserPage(id, name, lastname, email, password, e.getErrors());
+            var page = new EditUserPage(id, name, lastName, email, password, e.getErrors());
             ctx.render("users/edit.jte", Collections.singletonMap("page", page)).status(422);
         }
 

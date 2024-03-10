@@ -1,11 +1,10 @@
-package org.example.hexlet.dto.users;
+package org.example.hexlet.dto.cars;
 
 import io.javalin.validation.ValidationError;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.hexlet.dto.BasePage;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,11 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildUserPage extends BasePage {
-    private String name;
-    private String lastname;
-    private String email;
-    private String password;
+public class BuildCarsPage {
+    private String make;
+    private String model;
     private Map<String, List<ValidationError<Object>>> errors;
+    public BuildCarsPage(Map<String, List<ValidationError<Object>>> errors) {
+        this.errors = errors;
+    }
 }
